@@ -1,0 +1,60 @@
+<ng-container [ngSwitch]="dfc.type">
+<div style="margin: 5px;">
+  <!--=====[ TEXT FIELD ]=====-->
+  <md-input-container *ngSwitchCase="'text'" [hintLabel]="hint" style="width: 100%;">
+    <input mdInput
+           hideRequiredMarker="false"
+           [name]="dfc.key"
+           [formControl]="dfc"
+           [type]="dfc.config.format"
+           [placeholder]="placeholder"
+           [maxlength]="dfc.config.maxlimit"
+           [required]="dfc.config.required"
+           [dir]="dfc.config.dir">
+
+    <!--<md-hint align="start" *ngIf="hint">{{hint}}</md-hint>-->
+    <md-hint *ngIf="dfc.config.counter && dfc.config.maxlimit" align="end" class="no-text-wrap">{{dfc.value ? dfc.value.length : 0}} / {{dfc.config.maxlimit}}</md-hint>
+    <!--<ng-container *ngFor="let key of errorKeys()">
+      <md-error *ngIf="dfc.hasError(key)">{{resolveValidationMessage(key)}}</md-error>
+    </ng-container>-->
+
+    <md-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</md-error>
+    <md-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</md-error>
+    <md-error *ngIf="dfc.hasError('email')">{{resolveValidationMessage('email')}}</md-error>
+    <md-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</md-error>
+    <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
+  </md-input-container>
+
+  <!--=====[ SELECT FIELD ]=====-->
+  <ng-container *ngSwitchCase="'select'">
+    <md-select [formControl]="dfc"
+               [placeholder]="placeholder"
+               [required]="dfc.config.required"
+               required="true"
+               style="width: 100%; margin-bottom: -9px; margin-top: 9px;">
+      <md-option *ngFor="let opt of dfc.selectOptions" [value]="opt.code">{{opt.value}}</md-option>
+    </md-select>
+    <md-error *ngIf="dfc.hasError('required') && dfc.touched" style="font-size: 75%;">This option is required</md-error>
+  </ng-container>
+
+  <!--=====[ CHECK BOX ]=====-->
+  <ng-container *ngSwitchCase="'checkbox'">
+    <md-checkbox [formControl]="dfc">
+      {{placeholder}}
+    </md-checkbox>
+  </ng-container>
+
+  <!--=====[ LABEL ]=====-->
+  <ng-container *ngSwitchCase="'label'">
+    {{placeholder}}
+  </ng-container>
+
+  <!--=====[ DATE ]=====-->
+  <ng-container *ngSwitchCase="'date'">
+    <input [mdDatepicker]="myDatepicker" placeholder="yyyy-mm-dd">
+    <button [mdDatepickerToggle]="myDatepicker"></button>
+    <md-datepicker #myDatepicker></md-datepicker>
+  </ng-container>
+
+</div>
+</ng-container>
