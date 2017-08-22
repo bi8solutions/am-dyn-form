@@ -1,6 +1,6 @@
 {
   "name": "@bi8/am-dyn-form",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Angular Material Portal",
   "main": "./am-dyn-form.umd.js",
   "module": "./am-dyn-form.es5.js",

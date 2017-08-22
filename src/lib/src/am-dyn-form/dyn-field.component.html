@@ -26,13 +26,14 @@
   </md-input-container>
 
   <!--=====[ SELECT FIELD ]=====-->
+
   <ng-container *ngSwitchCase="'select'">
     <md-select [formControl]="dfc"
                [placeholder]="placeholder"
                [required]="dfc.config.required"
                required="true"
                style="width: 100%; margin-bottom: -9px; margin-top: 9px;">
-      <md-option *ngFor="let opt of dfc.selectOptions" [value]="opt.code">{{opt.value}}</md-option>
+      <md-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt.code">{{opt.value}}</md-option>
     </md-select>
     <md-error *ngIf="dfc.hasError('required') && dfc.touched" style="font-size: 75%;">This option is required</md-error>
   </ng-container>
