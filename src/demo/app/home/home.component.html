@@ -13,43 +13,9 @@
       <div fxLayout="row">
         <dyn-field name="country"></dyn-field>
       </div>
+      <div fxLayout="row">
+        <dyn-field name="fromDate"></dyn-field>
+      </div>
     </form>
   </dyn-field-set>
 </dyn-toolbar-panel>
-
-
-
-<!--
-<div  fxLayout="row" fxLayoutWrap="wrap"  fxLayoutAlign="center start">
-  <div fxFlex.xl="40%" fxFlex.lg="40%" fxFlex.md="55%" fxFlex.sm="70%" fxFlex="100">
-    <h2>Welcome Home</h2>
-  </div>
-</div>
--->
-
-<!--
-<md-card>
-  <am-table #table dataSource='' options=''>
-
-    <ng-container amColumnDef="userName">
-      <am-header-cell *amHeaderCellDef> Name </am-header-cell>
-      <am-filter-cell *amFilterCellDef></am-filter-cell>
-      <am-cell *amCellDef="let row"> {{row.name}} </am-cell>
-    </ng-container>
-
-    <ng-container amColumnDef="userName">
-      <am-header-cell *amHeaderCellDef> Name </am-header-cell>
-      <am-filter-cell *amFilterCellDef></am-filter-cell>
-      <am-cell *amCellDef="let row"> {{row.name}} </am-cell>
-    </ng-container>
-
-    <ng-container *amRowDetailDef="let row">
-    </ng-container>
-  </am-table>
-
-  <am-paginator #paginator
-                [length]="_peopleDatabase.data.length"
-                [pageSizeOptions]="[5, 10, 25, 100]">
-  </am-paginator>
-</md-card>
--->

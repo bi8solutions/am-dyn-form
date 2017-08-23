@@ -25,8 +25,34 @@
     <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
   </md-input-container>
 
-  <!--=====[ SELECT FIELD ]=====-->
+  <!--=====[ DATE ]=====-->
+  <ng-container *ngSwitchCase="'date'">
+    <md-input-container>
+      <input mdInput
+             hideRequiredMarker="false"
+             [name]="dfc.key"
+             [formControl]="dfc"
+             type="text"
+             [min]="dfc.minDate"
+             [max]="dfc.maxDate"
+             [required]="dfc.config.required"
+             [mdDatepicker]="mdDatepicker"
+             [placeholder]="placeholder"
+             (focus)="mdDatepicker.open()" 
+             style="pointer-events:none;" />
 
+          <button mdSuffix [mdDatepickerToggle]="mdDatepicker" md-tooltip="Select Date" mdTooltipShowDelay="1000"></button>
+
+      <md-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</md-error>
+      <md-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</md-error>
+      <md-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</md-error>
+      <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
+
+      </md-input-container>
+      <md-datepicker #mdDatepicker></md-datepicker>
+  </ng-container>
+
+  <!--=====[ SELECT FIELD ]=====-->
   <ng-container *ngSwitchCase="'select'">
     <md-select [formControl]="dfc"
                [placeholder]="placeholder"
@@ -49,13 +75,5 @@
   <ng-container *ngSwitchCase="'label'">
     {{placeholder}}
   </ng-container>
-
-  <!--=====[ DATE ]=====-->
-  <ng-container *ngSwitchCase="'date'">
-    <input [mdDatepicker]="myDatepicker" placeholder="yyyy-mm-dd">
-    <button [mdDatepickerToggle]="myDatepicker"></button>
-    <md-datepicker #myDatepicker></md-datepicker>
-  </ng-container>
-
 </div>
 </ng-container>

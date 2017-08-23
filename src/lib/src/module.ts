@@ -4,7 +4,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 
 import {
   MdButtonModule, MdCardModule, MdCheckboxModule, MdDatepickerModule, MdDialogModule, MdIconModule, MdInputModule, MdListModule, MdMenuModule,
-  MdOptionModule, MdSelectionModule, MdSelectModule, MdSidenavModule, MdTableModule, MdToolbarModule
+  MdNativeDateModule,
+  MdOptionModule, MdSelectionModule, MdSelectModule, MdSidenavModule, MdTableModule, MdToolbarModule, MdTooltipModule
 } from "@angular/material";
 
 import {RouterModule} from "@angular/router";
@@ -37,6 +38,8 @@ import {DynFormService} from "./am-dyn-form/dyn-form.service";
       MdButtonModule,
       MdCheckboxModule,
       MdDatepickerModule,
+      MdNativeDateModule,
+      MdTooltipModule,
       MdInputModule,
       MdSelectModule,
       MdSelectionModule,
