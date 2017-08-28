@@ -8,7 +8,7 @@ export class DynSelectControl extends DynFormControl {
   selectOptions$: Observable<any[]>;
 
   constructor(options: {} = {}, validator?: ValidatorFn | ValidatorFn[] | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
-    super(options, validator, asyncValidator);
+    super(options, validator, asyncValidator);  
     this.selectOptions$ = options['selectOptions'] || [];
   }
 

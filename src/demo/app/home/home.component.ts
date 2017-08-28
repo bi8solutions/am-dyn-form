@@ -21,10 +21,24 @@ export class HomeComponent implements OnInit {
       { id: 3, code: 'UK', name: 'United Kingdom'}
     ];
 
+    let heroes : any[] = [
+      { id: 1, code: 'SPIDERMAN', name: 'Spiderman' },
+      { id: 2, code: 'SUPERMAN', name: 'Superman'},
+      { id: 3, code: 'BATMAN', name: 'Batman'}
+    ];
+
     let countryOptions$ = Observable.of(countries).map((countries)=>{
       countries.forEach((country, index)=>{
         country.code = country.id;
         country.value = country.name;
+      });
+      return countries;
+    });
+
+    let heroOptions$ = Observable.of(heroes).map((countries)=>{
+      heroes.forEach((hero, index)=>{
+        hero.code = hero.id;
+        hero.value = hero.name;
       });
       return countries;
     });
@@ -61,6 +75,12 @@ export class HomeComponent implements OnInit {
           selectOptions: countryOptions$
         }, [Validators.required]),
 
+        heroes: new DynSelectControl({
+          key: 'heroes',
+          placeholder: 'Heroes',
+          selectOptions: heroOptions$
+        }, [Validators.required]),
+
         fromDate: new DynDateControl({
           key: 'fromDate',
           placeholder: 'From Date',
@@ -72,7 +92,16 @@ export class HomeComponent implements OnInit {
       });
 
     this.demoForm.get('country').setValue(1);
+    this.demoForm.get('lastName').valueChanges.subscribe((value)=>{
+      console.log(this.demoForm.get('country').value);
+      this.demoForm.get('country').disable();
+    });
+
     //this.demoForm.get('fromDate').setValue(new Date());
+  }
+
+  doStuff(){
+    console.log(this.demoForm.getRawValue());
   }
 
   getIdentity(){

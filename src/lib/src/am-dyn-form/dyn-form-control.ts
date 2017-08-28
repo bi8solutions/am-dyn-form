@@ -11,6 +11,7 @@ export abstract class DynFormControl extends FormControl {
   vCache: ValidatorFn | ValidatorFn[];
 
   constructor(options: {
+    defaultValue?: any,
     key?: string,           // the key of this field (used as reference and to lookup language labels, etc)
     required?: boolean,     // if this field is required or not
     dir? : string,          // the field direction (rtl, ltr)
@@ -19,7 +20,7 @@ export abstract class DynFormControl extends FormControl {
     messages? : any[]
 
   } = {}, validator?: ValidatorFn | ValidatorFn[] | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
-    super('', validator, asyncValidator);
+    super(options.defaultValue != undefined ? options.defaultValue : null, validator, asyncValidator);
     this.key = options.key || '';
     if (options){
       this.config.required = options.required != undefined ? options.required : false;

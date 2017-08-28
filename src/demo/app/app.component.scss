@@ -41,3 +41,20 @@ $custom-theme-warn: mat-palette($mat-red);
 $custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
 @include angular-material-theme($custom-theme);
 
+.mat-select-value {
+  padding-bottom: 12px;
+}
+
+.mat-select {
+  padding-top: 19px;
+}
+
+body .mat-select-trigger {
+  padding-bottom: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+body .mat-select-placeholder.mat-floating-placeholder {
+  top: -21px !important
+}

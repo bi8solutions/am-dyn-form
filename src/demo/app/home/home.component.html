@@ -1,20 +1,22 @@
 <dyn-toolbar-panel header="Demo Form" fxLayout="column">
   <dyn-field-set header="Personal Details">
     <form [formGroup]="demoForm" novalidate>
+      <!--<div fxLayout="row">
+        <dyn-field name="lastName"></dyn-field>
+      </div>-->
       <div fxLayout="row">
-        <dyn-field name="firstName"></dyn-field>
+        <dyn-field name="lastName"></dyn-field>
+        <dyn-field name="heroes"></dyn-field>
+
+        <dyn-field name="fromDate"></dyn-field>
       </div>
       <div fxLayout="row">
+        <dyn-field name="firstName"></dyn-field>
+        <dyn-field name="country"></dyn-field>
         <dyn-field name="middleName"></dyn-field>
       </div>
       <div fxLayout="row">
-        <dyn-field name="lastName"></dyn-field>
-      </div>
-      <div fxLayout="row">
-        <dyn-field name="country"></dyn-field>
-      </div>
-      <div fxLayout="row">
-        <dyn-field name="fromDate"></dyn-field>
+        <button (click)="doStuff()">Do Stuff</button>
       </div>
     </form>
   </dyn-field-set>

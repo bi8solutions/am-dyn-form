@@ -10,4 +10,5 @@ export {DynDateControl} from "./src/am-dyn-form/dyn-date-control";
 export {DynSelectControl} from "./src/am-dyn-form/dyn-select-control";
 export {DynToolbarPanelComponent} from "./src/am-dyn-form/dyn-toolbar-panel.component";
 export {DynMatchValidator} from "./src/am-dyn-form/dyn-validators";
+export {DynHiddenControl} from './src/am-dyn-form/dyn-hidden-control';
 export {DynFormModule} from './src/module';

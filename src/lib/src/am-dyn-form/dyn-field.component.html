@@ -36,12 +36,12 @@
              [min]="dfc.minDate"
              [max]="dfc.maxDate"
              [required]="dfc.config.required"
-             [mdDatepicker]="mdDatepicker"
+             [mdDatepicker]="picker"
              [placeholder]="placeholder"
-             (focus)="mdDatepicker.open()" 
+             (focus)="picker.open()"
              style="pointer-events:none;" />
 
-          <button mdSuffix [mdDatepickerToggle]="mdDatepicker" md-tooltip="Select Date" mdTooltipShowDelay="1000"></button>
+          <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
 
       <md-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</md-error>
       <md-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</md-error>
@@ -49,7 +49,7 @@
       <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
 
       </md-input-container>
-      <md-datepicker #mdDatepicker></md-datepicker>
+      <md-datepicker #picker></md-datepicker>
   </ng-container>
 
   <!--=====[ SELECT FIELD ]=====-->
@@ -58,7 +58,7 @@
                [placeholder]="placeholder"
                [required]="dfc.config.required"
                required="true"
-               style="width: 100%; margin-bottom: -9px; margin-top: 9px;">
+               style="width: 100%;">
       <md-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt.code">{{opt.value}}</md-option>
     </md-select>
     <md-error *ngIf="dfc.hasError('required') && dfc.touched" style="font-size: 75%;">This option is required</md-error>

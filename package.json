@@ -1,6 +1,6 @@
 {
   "name": "@bi8/am-dyn-form",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "description": "Angular Material Dynamic Form",
   "main": "./am-dyn-form.umd.js",
   "module": "./am-dyn-form.es5.js",
@@ -102,10 +102,10 @@
   },
   "dependencies": {
     "@angular/animations": "^4.3.3",
-    "@angular/cdk": "^2.0.0-beta.8",
+    "@angular/cdk": "github:angular/cdk-builds",
     "@angular/flex-layout": "^2.0.0-beta.8",
     "@angular/http": "^4.3.3",
-    "@angular/material": "^2.0.0-beta.8",
+    "@angular/material": "github:angular/material2-builds",
     "@angular/router": "^4.3.3",
     "@bi8/am-logger": "0.0.2",
     "@bi8/am-storage": "0.0.1",
