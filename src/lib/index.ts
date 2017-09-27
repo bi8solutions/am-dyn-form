@@ -5,6 +5,14 @@ export {DynFormArray} from "./src/am-dyn-form/dyn-form-array";
 export {DynFormGroup} from "./src/am-dyn-form/dyn-form-group";
 export {DynFormService} from "./src/am-dyn-form/dyn-form.service";
 export {DynTextControl} from "./src/am-dyn-form/dyn-text-control";
+export {
+  DynAutoCompleteControl,
+  AutoCompleteLoadFn,
+  AutoCompleteCriteriaLoader,
+  ArrayAutoCompleteLoader,
+  ObservableAutoCompleteLoader,
+  BasicAutoCompleteCriteriaLoader
+} from "./src/am-dyn-form/dyn-auto-complete-control";
 export {DynCheckboxControl} from "./src/am-dyn-form/dyn-checkbox-field";
 export {DynDateControl} from "./src/am-dyn-form/dyn-date-control";
 export {DynSelectControl} from "./src/am-dyn-form/dyn-select-control";

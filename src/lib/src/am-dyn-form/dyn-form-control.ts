@@ -26,7 +26,7 @@ export abstract class DynFormControl extends FormControl {
       this.config.required = options.required != undefined ? options.required : false;
       this.config.hint = options.hint;
       this.config.placeholder = options.placeholder;
-      this.config.dir = options.dir || null;
+      this.config.dir = options.dir || 'ltr';
       this.config.messages = options.messages || [];
 
       if (validator){

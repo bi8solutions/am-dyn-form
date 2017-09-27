@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {DynFormGroup, DynTextControl, DynSelectControl, DynDateControl} from "@bi8/am-dyn-form";
+import {DynFormGroup, DynTextControl, DynSelectControl, DynDateControl, DynAutoCompleteControl, ArrayAutoCompleteLoader} from "@bi8/am-dyn-form";
 import {Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
+
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-home',
@@ -21,24 +24,15 @@ export class HomeComponent implements OnInit {
       { id: 3, code: 'UK', name: 'United Kingdom'}
     ];
 
-    let heroes : any[] = [
-      { id: 1, code: 'SPIDERMAN', name: 'Spiderman' },
-      { id: 2, code: 'SUPERMAN', name: 'Superman'},
-      { id: 3, code: 'BATMAN', name: 'Batman'}
-    ];
+    let heroes = [];
+    for (let i = 0; i < 200; i++){
+      heroes.push({ id: i+1, name: "Super Hero " + i })
+    }
 
     let countryOptions$ = Observable.of(countries).map((countries)=>{
       countries.forEach((country, index)=>{
         country.code = country.id;
         country.value = country.name;
-      });
-      return countries;
-    });
-
-    let heroOptions$ = Observable.of(heroes).map((countries)=>{
-      heroes.forEach((hero, index)=>{
-        hero.code = hero.id;
-        hero.value = hero.name;
       });
       return countries;
     });
@@ -75,10 +69,10 @@ export class HomeComponent implements OnInit {
           selectOptions: countryOptions$
         }, [Validators.required]),
 
-        heroes: new DynSelectControl({
+        heroes: new DynAutoCompleteControl({
           key: 'heroes',
           placeholder: 'Heroes',
-          selectOptions: heroOptions$
+          loader: new ArrayAutoCompleteLoader(heroes, {size: 50, codeProperty: 'id', valueProperty: 'name'})
         }, [Validators.required]),
 
         fromDate: new DynDateControl({

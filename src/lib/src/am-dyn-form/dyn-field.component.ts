@@ -39,6 +39,11 @@ export class DynFieldComponent implements OnInit {
     }
 
     this.path = this.resolvePath();
+
+
+    /*
+    If this is an autocomplete, then I need to register for values changes and call the filter function on the form control
+    */
   }
 
   private resolvePath() : string {

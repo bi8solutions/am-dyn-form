@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {FlexLayoutModule} from "@angular/flex-layout";
 
 import {
+  MdAutocompleteModule,
   MdButtonModule, MdCardModule, MdCheckboxModule, MdDatepickerModule, MdDialogModule, MdIconModule, MdInputModule, MdListModule, MdMenuModule,
   MdNativeDateModule,
   MdOptionModule, MdSelectModule, MdSidenavModule, MdTableModule, MdToolbarModule, MdTooltipModule
@@ -34,6 +35,7 @@ import {DynFormService} from "./am-dyn-form/dyn-form.service";
       FlexLayoutModule,
       FormsModule,
       ReactiveFormsModule,
+      MdAutocompleteModule,
       MdCardModule,
       MdButtonModule,
       MdCheckboxModule,

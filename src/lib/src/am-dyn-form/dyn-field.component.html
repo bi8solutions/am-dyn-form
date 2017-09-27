@@ -25,6 +25,29 @@
     <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
   </md-input-container>
 
+  <!--=====[ AUTOCOMPLETE ]=====-->
+  <ng-container *ngSwitchCase="'auto-complete'">
+    <md-form-field style="width: 100%;">
+      <input mdInput
+             [name]="dfc.key"
+             [placeholder]="placeholder"
+             [mdAutocomplete]="auto"
+             [formControl]="dfc"
+             [required]="dfc.config.required"
+             [dir]="dfc.config.dir">
+
+      <md-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</md-error>
+      <md-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</md-error>
+      <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
+
+      <md-autocomplete #auto="mdAutocomplete" [displayWith]="dfc.displayFn.bind(dfc)">
+        <md-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt.code">
+          {{opt.value}}
+        </md-option>
+      </md-autocomplete>
+    </md-form-field>
+  </ng-container>
+
   <!--=====[ DATE ]=====-->
   <ng-container *ngSwitchCase="'date'">
     <md-input-container>
