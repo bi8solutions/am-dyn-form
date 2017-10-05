@@ -3,7 +3,7 @@ import {ControlContainer, AbstractControl} from "@angular/forms";
 import {DynFormControl} from "./dyn-form-control";
 import {DynFormGroup} from "./dyn-form-group";
 import {DynFormArray} from "./dyn-form-array";
-import {LogService, Logger} from "@bi8/am-logger";
+//import {LogService, Logger} from "@bi8/am-logger";
 
 @Component({
   selector: 'dyn-field',
@@ -14,7 +14,7 @@ export class DynFieldComponent implements OnInit {
 
   @Input() name;
 
-  logger: Logger;
+  //logger: Logger;
   dfc: any;
   path: string;
   paths: string[] = [];
@@ -23,10 +23,7 @@ export class DynFieldComponent implements OnInit {
   hint : string;
   messages : Map<string, string> = new Map();
 
-  constructor(@Optional() @Host() @SkipSelf() public controlContainer: ControlContainer,
-              private logService : LogService) {
-
-    this.logger = logService.getLogger(this.constructor.name);
+  constructor(@Optional() @Host() @SkipSelf() public controlContainer: ControlContainer) {
   }
 
   ngOnInit() {

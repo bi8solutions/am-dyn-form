@@ -72,7 +72,9 @@ export class HomeComponent implements OnInit {
         heroes: new DynAutoCompleteControl({
           key: 'heroes',
           placeholder: 'Heroes',
-          loader: new ArrayAutoCompleteLoader(heroes, {size: 50, codeProperty: 'id', valueProperty: 'name'})
+          loader: new ArrayAutoCompleteLoader(heroes, (hero, value)=>{
+            return value ? hero.name.toLocaleLowerCase().indexOf(value.toLowerCase()) > -1 : true;
+          }, {size: 50, codeProperty: 'id', valueProperty: 'name'})
         }, [Validators.required]),
 
         fromDate: new DynDateControl({
@@ -86,6 +88,11 @@ export class HomeComponent implements OnInit {
       });
 
     this.demoForm.get('country').setValue(1);
+    this.demoForm.get('heroes').setValue(
+    { id: 3, name: "Super Hero 3" }
+    );
+
+    this.demoForm.get("heroes").updateValueAndValidity();
     this.demoForm.get('lastName').valueChanges.subscribe((value)=>{
       console.log(this.demoForm.get('country').value);
       this.demoForm.get('country').disable();
@@ -95,7 +102,16 @@ export class HomeComponent implements OnInit {
   }
 
   doStuff(){
-    console.log(this.demoForm.getRawValue());
+    console.log("======> ", this.demoForm.get('fromDate').value);
+    let date = new Date();
+    console.log("======> ", date);
+    console.log("======>date.toLocaleTimeString() ", date.toLocaleTimeString());
+    console.log("======>date.toJSON() ", date.toJSON());
+    console.log("======>date.toDateString() ", date.toDateString());
+
+    let jsonValue = date.toJSON();
+    let parsedDate = JSON.parse(jsonValue);
+    console.log("--> ", parsedDate);
   }
 
   getIdentity(){

@@ -41,16 +41,22 @@
       <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
 
       <md-autocomplete #auto="mdAutocomplete" [displayWith]="dfc.displayFn.bind(dfc)">
-        <md-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt.code">
-          {{opt.value}}
+        <md-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt">
+          {{dfc.displayFn(opt)}}
         </md-option>
       </md-autocomplete>
     </md-form-field>
+
+    <!--
+    I need to seperate the the value being set from the value that is used for the autocomplete lookup.
+
+
+    -->
   </ng-container>
 
   <!--=====[ DATE ]=====-->
   <ng-container *ngSwitchCase="'date'">
-    <md-input-container>
+    <md-form-field>
       <input mdInput
              hideRequiredMarker="false"
              [name]="dfc.key"
@@ -61,18 +67,20 @@
              [required]="dfc.config.required"
              [mdDatepicker]="picker"
              [placeholder]="placeholder"
-             (focus)="picker.open()"
              style="pointer-events:none;" />
+      
+      <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+      <md-datepicker #picker></md-datepicker>
 
-          <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+          <!--<md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>-->
 
       <md-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</md-error>
       <md-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</md-error>
       <md-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</md-error>
       <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
 
-      </md-input-container>
-      <md-datepicker #picker></md-datepicker>
+      </md-form-field>
+      <!--<md-datepicker #picker></md-datepicker>-->
   </ng-container>
 
   <!--=====[ SELECT FIELD ]=====-->

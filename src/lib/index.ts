@@ -11,7 +11,7 @@ export {
   AutoCompleteCriteriaLoader,
   ArrayAutoCompleteLoader,
   ObservableAutoCompleteLoader,
-  BasicAutoCompleteCriteriaLoader
+  KeywordAutoCompleteCriteriaLoader
 } from "./src/am-dyn-form/dyn-auto-complete-control";
 export {DynCheckboxControl} from "./src/am-dyn-form/dyn-checkbox-field";
 export {DynDateControl} from "./src/am-dyn-form/dyn-date-control";

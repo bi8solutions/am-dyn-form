@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent }  from './app.component';
 
 import {LogConfig, LogLevel, LogModule} from '@bi8/am-logger';
-import {UaaConfig, UaaModule} from "@bi8/am-uaa";
+//import {UaaConfig, UaaModule} from "@bi8/am-uaa";
 import {StorageModule} from "@bi8/am-storage";
 import {MdCardModule, MdToolbarModule} from "@angular/material";
 import {HttpModule} from "@angular/http";
