@@ -66,7 +66,8 @@ export class HomeComponent implements OnInit {
         country: new DynSelectControl({
           key: 'country',
           placeholder: 'Country',
-          selectOptions: countryOptions$
+          selectOptions: countryOptions$,
+          showNone: true
         }, [Validators.required]),
 
         heroes: new DynAutoCompleteControl({
@@ -87,7 +88,7 @@ export class HomeComponent implements OnInit {
         }, [Validators.required])
       });
 
-    this.demoForm.get('country').setValue(1);
+    //this.demoForm.get('country').setValue(1);
     this.demoForm.get('heroes').setValue(
     { id: 3, name: "Super Hero 3" }
     );

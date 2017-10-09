@@ -6,10 +6,14 @@ import {Subject} from "rxjs/Subject";
 export class DynSelectControl extends DynFormControl {
   type = 'select';
   selectOptions$: Observable<any[]>;
+  showNone: boolean;
+  noneLabel: string;
 
   constructor(options: {} = {}, validator?: ValidatorFn | ValidatorFn[] | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
     super(options, validator, asyncValidator);  
     this.selectOptions$ = options['selectOptions'] || [];
+    this.showNone = options['showNone'] || false;
+    this.noneLabel = options['noneLabel']
   }
 
   setValue(value: any, options?: {

@@ -90,6 +90,7 @@
                [required]="dfc.config.required"
                required="true"
                style="width: 100%;">
+      <md-option *ngIf="dfc.showNone" (click)="dfc.reset()">{{dfc.noneLabel}}</md-option>
       <md-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt.code">{{opt.value}}</md-option>
     </md-select>
     <md-error *ngIf="dfc.hasError('required') && dfc.touched" style="font-size: 75%;">This option is required</md-error>
