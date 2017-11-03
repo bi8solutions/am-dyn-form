@@ -25,6 +25,28 @@
     <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
   </md-input-container>
 
+  <!--=====[ TEXTAREA FIELD ]=====-->
+  <md-input-container *ngSwitchCase="'textarea'" [hintLabel]="hint" style="width: 100%;">
+    <textarea mdInput
+              hideRequiredMarker="false"
+              mdTextareaAutosize
+              [mdAutosizeMinRows]="dfc.config.minRows"
+              [mdAutosizeMaxRows]="dfc.config.maxRows"
+              [name]="dfc.key"
+              [formControl]="dfc"
+              [placeholder]="placeholder"
+              [maxlength]="dfc.config.maxlimit"
+              [required]="dfc.config.required"
+              [dir]="dfc.config.dir"></textarea>
+
+    <md-hint *ngIf="dfc.config.counter && dfc.config.maxlimit" align="end" class="no-text-wrap">{{dfc.value ? dfc.value.length : 0}} / {{dfc.config.maxlimit}}</md-hint>
+    <md-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</md-error>
+    <md-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</md-error>
+    <md-error *ngIf="dfc.hasError('email')">{{resolveValidationMessage('email')}}</md-error>
+    <md-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</md-error>
+    <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
+  </md-input-container>
+
   <!--=====[ AUTOCOMPLETE ]=====-->
   <ng-container *ngSwitchCase="'auto-complete'">
     <md-form-field style="width: 100%;">
@@ -46,12 +68,6 @@
         </md-option>
       </md-autocomplete>
     </md-form-field>
-
-    <!--
-    I need to seperate the the value being set from the value that is used for the autocomplete lookup.
-
-
-    -->
   </ng-container>
 
   <!--=====[ DATE ]=====-->
@@ -72,15 +88,11 @@
       <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
       <md-datepicker #picker></md-datepicker>
 
-          <!--<md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>-->
-
       <md-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</md-error>
       <md-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</md-error>
       <md-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</md-error>
       <md-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</md-error>
-
-      </md-form-field>
-      <!--<md-datepicker #picker></md-datepicker>-->
+    </md-form-field>
   </ng-container>
 
   <!--=====[ SELECT FIELD ]=====-->

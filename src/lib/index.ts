@@ -5,6 +5,7 @@ export {DynFormArray} from "./src/am-dyn-form/dyn-form-array";
 export {DynFormGroup} from "./src/am-dyn-form/dyn-form-group";
 export {DynFormService} from "./src/am-dyn-form/dyn-form.service";
 export {DynTextControl} from "./src/am-dyn-form/dyn-text-control";
+export {DynTextareaControl} from "./src/am-dyn-form/dyn-textarea-control";
 export {
   DynAutoCompleteControl,
   AutoCompleteLoadFn,

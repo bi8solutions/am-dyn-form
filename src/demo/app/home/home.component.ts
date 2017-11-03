@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {DynFormGroup, DynTextControl, DynSelectControl, DynDateControl, DynAutoCompleteControl, ArrayAutoCompleteLoader} from "@bi8/am-dyn-form";
+import {
+  DynFormGroup, DynTextControl, DynSelectControl, DynDateControl, DynAutoCompleteControl, ArrayAutoCompleteLoader,
+  DynTextareaControl
+} from "@bi8/am-dyn-form";
 import {Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 
@@ -60,6 +63,17 @@ export class HomeComponent implements OnInit {
           maxlimit: 64,
           messages: [
             { key: 'required', value: 'Last Name is required' }
+          ]
+        }, [Validators.required]),
+
+        comments: new DynTextareaControl({
+          key: 'comments',
+          placeholder: 'Comments',
+          maxlimit: 1024,
+          minRows: 5,
+          maxRows: 10,
+          messages: [
+            { key: 'required', value: 'Please provide Comments' }
           ]
         }, [Validators.required]),
 
