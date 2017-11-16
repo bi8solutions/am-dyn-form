@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts",
+    "externals": {
+      "lodash": "lodash",
+      "@angular/material": "ng.material",
+      "@bi8/am-logger": "am-logger",
+      "@bi8/am-storage": "am-storage"
+    }
+  }
+}

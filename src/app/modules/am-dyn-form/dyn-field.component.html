@@ -1,0 +1,123 @@
+<ng-container [ngSwitch]="dfc.type">
+<div style="margin: 5px;">
+  <!--=====[ TEXT FIELD ]=====-->
+  <mat-form-field *ngSwitchCase="'text'" [hintLabel]="hint" style="width: 100%;">
+    <input matInput
+           hideRequiredMarker="false"
+           [name]="dfc.key"
+           [formControl]="dfc"
+           [type]="dfc.config.format"
+           [placeholder]="placeholder"
+           [maxlength]="dfc.config.maxlimit"
+           [required]="dfc.config.required"
+           [dir]="dfc.config.dir">
+
+    <mat-hint *ngIf="dfc.config.counter && dfc.config.maxlimit" align="end" class="no-text-wrap">{{dfc.value ? dfc.value.length : 0}} / {{dfc.config.maxlimit}}</mat-hint>
+
+    <mat-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('email')">{{resolveValidationMessage('email')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</mat-error>
+  </mat-form-field>
+
+  <!--=====[ TEXTAREA FIELD ]=====-->
+  <mat-form-field *ngSwitchCase="'textarea'" [hintLabel]="hint" style="width: 100%;">
+    <textarea matInput
+              hideRequiredMarker="false"
+              matTextareaAutosize
+              [matAutosizeMinRows]="dfc.config.minRows"
+              [matAutosizeMaxRows]="dfc.config.maxRows"
+              [name]="dfc.key"
+              [formControl]="dfc"
+              [placeholder]="placeholder"
+              [maxlength]="dfc.config.maxlimit"
+              [required]="dfc.config.required"
+              [dir]="dfc.config.dir"></textarea>
+
+    <mat-hint *ngIf="dfc.config.counter && dfc.config.maxlimit" align="end" class="no-text-wrap">{{dfc.value ? dfc.value.length : 0}} / {{dfc.config.maxlimit}}</mat-hint>
+    <mat-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('email')">{{resolveValidationMessage('email')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</mat-error>
+  </mat-form-field>
+
+  <!--=====[ AUTOCOMPLETE ]=====-->
+  <ng-container *ngSwitchCase="'auto-complete'">
+    <mat-form-field style="width: 100%;">
+      <input matInput
+             [name]="dfc.key"
+             [placeholder]="placeholder"
+             [matAutocomplete]="auto"
+             [formControl]="dfc"
+             [required]="dfc.config.required"
+             [dir]="dfc.config.dir">
+
+      <mat-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</mat-error>
+      <mat-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</mat-error>
+      <mat-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</mat-error>
+
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="dfc.displayFn.bind(dfc)">
+        <mat-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt">
+          {{dfc.displayFn(opt)}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </ng-container>
+
+  <!--=====[ DATE ]=====-->
+  <ng-container *ngSwitchCase="'date'">
+    <mat-form-field>
+      <input matInput
+             hideRequiredMarker="false"
+             [name]="dfc.key"
+             [formControl]="dfc"
+             type="text"
+             [min]="dfc.minDate"
+             [max]="dfc.maxDate"
+             [required]="dfc.config.required"
+             [matDatepicker]="picker"
+             [placeholder]="placeholder"
+             style="pointer-events:none;" />
+
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+      <mat-error *ngIf="dfc.hasError('required')">{{resolveValidationMessage('required')}}</mat-error>
+      <mat-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</mat-error>
+      <mat-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</mat-error>
+      <mat-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</mat-error>
+    </mat-form-field>
+  </ng-container>
+
+  <!--=====[ SELECT FIELD ]=====-->
+  <ng-container *ngSwitchCase="'select'">
+    <mat-form-field>
+      <mat-select [formControl]="dfc"
+                 [placeholder]="placeholder"
+                 [required]="dfc.config.required"
+                 required="true"
+                 style="width: 100%;">
+        <mat-option *ngIf="dfc.showNone" (click)="dfc.reset()">{{dfc.noneLabel}}</mat-option>
+        <mat-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt.code">{{opt.value}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="dfc.hasError('required') && dfc.touched" style="font-size: 75%;">This option is required</mat-error>
+    </mat-form-field>
+  </ng-container>
+
+  <!--=====[ CHECK BOX ]=====-->
+  <ng-container *ngSwitchCase="'checkbox'">
+    <mat-form-field>
+      <mat-checkbox [formControl]="dfc">
+        {{placeholder}}
+      </mat-checkbox>
+    </mat-form-field>
+  </ng-container>
+
+  <!--=====[ LABEL ]=====-->
+  <ng-container *ngSwitchCase="'label'">
+    {{placeholder}}
+  </ng-container>
+</div>
+</ng-container>

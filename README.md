@@ -1,2 +1,34 @@
-# am-dyn-form
-Angular Material Dynamic Form Library
+# Angular Material Dynamic Form
+
+AmDynForm is a dynamic form control library  
+
+Please note that this is a *Proof of Concept* library and not meant for production use and that the API can 
+change at any time.
+
+Version 5.0 is a update to the way the library gets build as well as depending on Angular5.
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
+
+## Installation
+
+To install AmDynForm in your project, simply do
+
+```
+npm i @bi8/am-dyn-form
+```  
+
+AmDynForm depends on/uses ```@bi8/am-storage``` and ```@bi8/am-logger```
+
+
+## Build
+
+Run `npm i` to install all the dependencies. To create the bundle/distribution, run `npm run packagr`
+which will do a new release under the dist folder. 
+
+## Project Layout
+This is basically a CLI generated application with the addition of [ng-packagr](https://www.npmjs.com/package/ng-packagr) to create the distribution 
+bundle.  The app component imports the AmStorageModule that is located under the modules directory.  Only the module is packaged
+an not the whole example project.  
+
+Please see Nikolas LeBlanc's article: [Building an Angular 4 Component Library with the Angular CLI and ng-packagr](https://medium.com/@ngl817/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e) 
+
