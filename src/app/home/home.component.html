@@ -1,5 +1,5 @@
 <dyn-toolbar-panel header="Demo Form" fxLayout="column">
-  <dyn-field-set header="Personal Details">
+  <!--<dyn-field-set header="Personal Details">-->
     {{demoForm.value | json}}
 
     <form [formGroup]="demoForm" novalidate>
@@ -13,8 +13,11 @@
       </div>
       <div fxLayout="row">
         <dyn-field name="firstName"></dyn-field>
-        <dyn-field name="country"></dyn-field>
+
         <dyn-field name="middleName"></dyn-field>
+      </div>
+      <div fxLayout="row">
+        <dyn-field name="country"></dyn-field>
       </div>
       <div fxLayout="row">
         <dyn-field name="comments"></dyn-field>
@@ -23,5 +26,5 @@
         <button (click)="doStuff()">Do Stuff</button>
       </div>
     </form>
-  </dyn-field-set>
+  <!--</dyn-field-set>-->
 </dyn-toolbar-panel>
