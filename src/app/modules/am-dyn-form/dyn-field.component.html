@@ -108,11 +108,9 @@
 
   <!--=====[ CHECK BOX ]=====-->
   <ng-container *ngSwitchCase="'checkbox'">
-    <mat-form-field>
-      <mat-checkbox [formControl]="dfc">
-        {{placeholder}}
-      </mat-checkbox>
-    </mat-form-field>
+    <mat-checkbox [formControl]="dfc">
+      {{placeholder}}
+    </mat-checkbox>
   </ng-container>
 
   <!--=====[ LABEL ]=====-->
