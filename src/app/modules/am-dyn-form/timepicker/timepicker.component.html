@@ -1,0 +1,40 @@
+<form [formGroup]="timeForm" novalidate style="display: flex; flex-direction: row;">
+  <mat-form-field style="width: 40px; padding-right: 5px;">
+    <mat-select formControlName="hours">
+      <mat-option value="1">&nbsp;1</mat-option>
+      <mat-option value="2">2</mat-option>
+      <mat-option value="3">3</mat-option>
+      <mat-option value="4">4</mat-option>
+      <mat-option value="5">5</mat-option>
+      <mat-option value="6">6</mat-option>
+      <mat-option value="7">7</mat-option>
+      <mat-option value="8">8</mat-option>
+      <mat-option value="9">9</mat-option>
+      <mat-option value="10">10</mat-option>
+      <mat-option value="11">11</mat-option>
+      <mat-option value="12">12</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field style="width: 40px; padding-right: 5px;">
+    <mat-select formControlName="minutes">
+      <mat-option value="1">00</mat-option>
+      <mat-option value="1">05</mat-option>
+      <mat-option value="2">10</mat-option>
+      <mat-option value="3">15</mat-option>
+      <mat-option value="4">20</mat-option>
+      <mat-option value="5">25</mat-option>
+      <mat-option value="6">30</mat-option>
+      <mat-option value="7">35</mat-option>
+      <mat-option value="8">40</mat-option>
+      <mat-option value="9">45</mat-option>
+      <mat-option value="10">50</mat-option>
+      <mat-option value="11">55</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field style="width: 50px;">
+    <mat-select formControlName="amPm">
+      <mat-option value="am">AM</mat-option>
+      <mat-option value="pm">PM</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

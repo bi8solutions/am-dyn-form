@@ -18,6 +18,7 @@
     <mat-error *ngIf="dfc.hasError('pattern')">{{resolveValidationMessage('pattern')}}</mat-error>
     <mat-error *ngIf="dfc.hasError('email')">{{resolveValidationMessage('email')}}</mat-error>
     <mat-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</mat-error>
+    <mat-error *ngIf="dfc.hasError('time')">{{resolveValidationMessage('time')}}</mat-error>
     <mat-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</mat-error>
   </mat-form-field>
 
@@ -89,6 +90,11 @@
       <mat-error *ngIf="dfc.hasError('match')">{{resolveValidationMessage('match')}}</mat-error>
       <mat-error *ngIf="dfc.hasError('logical')">{{dfc.logicalErrorMessage}}</mat-error>
     </mat-form-field>
+  </ng-container>
+
+  <!--=====[ DATE ]=====-->
+  <ng-container *ngSwitchCase="'time'">
+    <am-timepicker [formControl]="dfc"></am-timepicker>
   </ng-container>
 
   <!--=====[ SELECT FIELD ]=====-->

@@ -6,7 +6,7 @@ import { HomeComponent } from './home.component';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AmDynFormModule } from "../modules/am-dyn-form/am-dyn-form.module";
-
+import {MatMomentDateModule, MomentDateModule} from "@angular/material-moment-adapter";
 
 @NgModule({
   imports: [
@@ -16,6 +16,9 @@ import { AmDynFormModule } from "../modules/am-dyn-form/am-dyn-form.module";
     ReactiveFormsModule,
     HomeRoutingModule,
     FlexLayoutModule,
+    MomentDateModule,
+    MatMomentDateModule,
+
     AmDynFormModule
   ],
   declarations: [HomeComponent],
