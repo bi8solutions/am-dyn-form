@@ -5,6 +5,7 @@ import * as moment_ from 'moment';
 const moment = moment_;
 
 import index from "@angular/cli/lib/cli";
+import {Moment} from "moment";
 
 export function DynMatchValidator (otherControlName: string) {
 
@@ -91,7 +92,7 @@ export class TimeUtils {
     return null;
   }
 
-  /*
+
   static formatTime(date : Date | Moment) : string {
     if (<Moment> date){
       return (<Moment>date).format('hh:mm a');
@@ -101,8 +102,8 @@ export class TimeUtils {
     }
   }
 
-  static applyTime(date: Date | any, time: TimeData) {
-    if (date instanceof moment){
+  static applyTime(date: Date | Moment, time: TimeData) {
+    if (<Date> date){
       let md : Moment = <Moment> date;
       md.hours(time.hours);
       md.minutes(time.minutes);
@@ -113,7 +114,7 @@ export class TimeUtils {
       md.minutes(time.minutes);
     }
   }
-  */
+
 }
 
 export function TimeValidator () : ValidatorFn {
