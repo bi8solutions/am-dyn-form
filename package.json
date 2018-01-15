@@ -1,6 +1,6 @@
 {
   "name": "@bi8/am-dyn-form",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "packagr": "ng-packagr -p ng-package.json && copyfiles -u 4 src/assets/styles/scss/*.* dist/scss && copyfiles -u 1 etc/_theming.scss dist",
+    "packagr": "ng-packagr -p ng-package.json",
     "serve": "ng serve --ssl --proxy-config proxy-conf.json --port 8000"
   },
   "private": false,
@@ -32,14 +32,14 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
-    "@bi8/am-logger": "^5.0.6",
-    "@bi8/am-storage": "^5.0.8",
+    "@bi8/am-logger": "^5.0.7",
+    "@bi8/am-storage": "^5.0.9",
     "core-js": "^2.5.3",
     "material-design-icons": "^3.0.1",
     "moment": "^2.20.1",
     "roboto-fontface": "^0.8.0",
     "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.20"
   },
   "devDependencies": {
     "@angular/cli": "1.5.0",
