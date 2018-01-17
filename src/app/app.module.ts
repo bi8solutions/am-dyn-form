@@ -41,9 +41,9 @@ export const CUSTOM_FORMATS = {
     MatInputModule
   ],
   providers:    [
-    { provide: 'LogConfig', useValue: logConfig },
-    { provide: MAT_DATE_LOCALE, useValue: 'en-ZA'},
-    {provide: MAT_DATE_FORMATS, useValue: CUSTOM_FORMATS}
+    { provide: 'LogConfig', useValue: logConfig }
+    //{ provide: MAT_DATE_LOCALE, useValue: 'en-ZA'},
+    //{provide: MAT_DATE_FORMATS, useValue: CUSTOM_FORMATS}
   ],
   bootstrap: [AppComponent]
 })

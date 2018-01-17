@@ -28,7 +28,6 @@ import {DynFormService} from "./dyn-form.service";
 import {DynFieldComponent} from "./dyn-field.component";
 import {DynToolbarPanelComponent} from "./dyn-toolbar-panel.component";
 import {DynFieldSetComponent} from "./dyn-field-set.component";
-import {MatMomentDateModule, MomentDateModule} from "@angular/material-moment-adapter";
 import {AmTimepickerComponent} from "./timepicker/timepicker.component";
 
 @NgModule({
@@ -54,9 +53,7 @@ import {AmTimepickerComponent} from "./timepicker/timepicker.component";
     MatSidenavModule,
     MatMenuModule,
     MatTableModule,
-    MatListModule,
-    MomentDateModule,
-    MatMomentDateModule,
+    MatListModule
   ],
   exports: [
     DynFieldComponent,

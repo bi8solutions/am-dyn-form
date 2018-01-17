@@ -9,19 +9,11 @@ import {DynSelectControl} from "../modules/am-dyn-form/dyn-select-control";
 import {ArrayAutoCompleteLoader, DynAutoCompleteControl} from "../modules/am-dyn-form/dyn-auto-complete-control";
 import {DynDateControl} from "../modules/am-dyn-form/dyn-date-control";
 
-import * as _ from 'lodash';
-
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 
-import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import * as moment from 'moment';
-import {DynTimeControl} from "../modules/am-dyn-form/dyn-time-control";
 import {TimeValidator} from "../modules/am-dyn-form/dyn-validators";
-
-
 
 @Component({
   selector: 'app-home',
