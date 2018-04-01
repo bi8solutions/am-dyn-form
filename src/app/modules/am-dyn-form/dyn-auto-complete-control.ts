@@ -30,7 +30,7 @@ export class DynAutoCompleteControl extends DynFormControl {
   }
 
   loadValues(value){
-    console.log("loading values: ", value);
+    //console.log("loading values: ", value);
     this.loader.prepare({
             value: value
     }).subscribe((result: any)=>{
