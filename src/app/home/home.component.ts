@@ -90,7 +90,8 @@ export class HomeComponent implements OnInit {
           key: 'country',
           placeholder: 'Country',
           selectOptions: countryOptions$,
-          showNone: true
+          showNone: false,
+          multiple: true
         }, [Validators.required]),
 
         heroes: new DynAutoCompleteControl({
@@ -143,6 +144,7 @@ export class HomeComponent implements OnInit {
   }
 
   doStuff(){
+    console.log("===========================> ", this.demoForm.value);
     console.log("======> ", this.demoForm.get('fromDate').value);
     let date = new Date();
     console.log("======> ", date);

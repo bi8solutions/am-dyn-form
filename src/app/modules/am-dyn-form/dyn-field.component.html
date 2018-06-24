@@ -104,6 +104,7 @@
                  [placeholder]="placeholder"
                  [required]="dfc.config.required"
                  required="true"
+                 [multiple]="dfc.multiple"
                  style="width: 100%;">
         <mat-option *ngIf="dfc.showNone" (click)="dfc.reset()">{{dfc.noneLabel}}</mat-option>
         <mat-option *ngFor="let opt of dfc.selectOptions$ | async" [value]="opt.code">{{opt.value}}</mat-option>

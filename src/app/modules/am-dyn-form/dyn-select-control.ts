@@ -7,12 +7,14 @@ export class DynSelectControl extends DynFormControl {
   selectOptions$: Observable<any[]>;
   showNone: boolean;
   noneLabel: string;
+  multiple: boolean;
 
   constructor(options: {} = {}, validator?: ValidatorFn | ValidatorFn[] | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
     super(options, validator, asyncValidator);
     this.selectOptions$ = options['selectOptions'] || [];
     this.showNone = options['showNone'] || false;
-    this.noneLabel = options['noneLabel']
+    this.noneLabel = options['noneLabel'];
+    this.multiple = options['multiple'] || false;
   }
 
   setValue(value: any, options?: {
