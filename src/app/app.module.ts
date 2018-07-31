@@ -3,15 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {AmDynFormModule} from "./modules/am-dyn-form/am-dyn-form.module";
-import {AmLoggerModule, LogConfig, LogLevel} from "@bi8/am-logger";
 import {AmStorageModule} from "@bi8/am-storage";
 import {AppRoutingModule} from "./app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
 import {RouterModule} from "@angular/router";
 import {HomeModule} from "./home/home.module";
 import {MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatInputModule} from "@angular/material";
-
-const logConfig : LogConfig = { level: LogLevel.debug };
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -31,7 +28,6 @@ export const CUSTOM_FORMATS = {
   ],
   imports: [
     BrowserModule,
-    AmLoggerModule,
     AmStorageModule,
     AmDynFormModule,
     AppRoutingModule,
@@ -41,7 +37,6 @@ export const CUSTOM_FORMATS = {
     MatInputModule
   ],
   providers:    [
-    { provide: 'LogConfig', useValue: logConfig }
     //{ provide: MAT_DATE_LOCALE, useValue: 'en-ZA'},
     //{provide: MAT_DATE_FORMATS, useValue: CUSTOM_FORMATS}
   ],
