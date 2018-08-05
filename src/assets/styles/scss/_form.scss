@@ -20,3 +20,236 @@ dyn-field-set {
     }
   }
 }
+
+$field-font-size: 12px;
+
+.ng-select {
+  padding-bottom: 15px;
+}
+
+.ng-select.am-has-value {
+
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  font-size: $field-font-size;
+  bottom: 7px;
+}
+
+.ng-dropdown-panel {
+  &.ng-select-bottom {
+    top: calc(100% - 1.2em);
+  }
+}
+
+@mixin ng-arrow-mixin($bottom) {
+  .ng-arrow-wrapper {
+    position: absolute;
+    right: 2px;
+    bottom: $bottom;
+    z-index: 100;
+  }
+}
+
+@mixin ng-clear-mixin($bottom) {
+  .ng-clear-wrapper {
+    width: 10px;
+    position: absolute;
+    right: 18px;
+    bottom: $bottom;
+    z-index: 100;
+  }
+}
+
+@mixin ng-input-mixen($lineheight, $fontsize, $offset){
+  .ng-input {
+    input {
+      line-height: $lineheight;
+      font-size: $fontsize;
+      width: calc(100% - #{$offset});
+    }
+  }
+}
+
+@mixin ng-spinner-loader($bottom, $right){
+  .ng-spinner-loader {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+    font-size: 5px;
+    position: absolute;
+    right: $right;
+    bottom: $bottom;
+  }
+}
+
+/*
+ng-untouched ng-pristine [ng-invalid] ng-touched ng-dirty ng-valid
+ng-select-focused ng-select-opened ng-untouched ng-pristine [ng-invalid] ng-touched ng-dirty [ng-valid]
+$focused, $opened, $touched, $invalid, $dirty
+*/
+
+.am-field-container {
+  position: relative;
+}
+
+dyn-field > .am-field-row > .am-field-container > .am-select-error {
+  display: inline;
+  position: absolute;
+  font-size: 9px;
+  color: red;
+  bottom: 3px;
+  left: 0;
+}
+
+@mixin ng-select-container-mixin($single, $bottom, $minheight, $fontsize, $lineheight) {
+  .ng-select-container.ng-has-value > .ng-value-container > .ng-placeholder {
+    top: 15px;
+  }
+
+  &.ng-select-focused > .ng-select-container > .ng-value-container > .ng-placeholder {
+    color:red;
+    top: 15px;
+  }
+
+  &.ng-touched.ng-invalid > .ng-select-container > .ng-value-container > .ng-placeholder {
+    color:red;
+  }
+
+  &.ng-select-focused > .ng-select-container:after {
+    border-color: red;
+    border-width: 2px;
+  }
+
+  &.ng-touched.ng-invalid > .ng-select-container:after {
+    border-color: red;
+  }
+
+  .ng-select-container {
+    bottom: $bottom;
+    min-height: $minheight;
+    font-size: $fontsize;
+
+    @if ($single){
+      @include ng-arrow-mixin(7px);
+      @include ng-clear-mixin(4px);
+
+      .ng-value-container {
+        padding-top: 6px;
+        padding-bottom: 5px;
+
+        max-width: calc(100% - 45px);
+        @include ng-input-mixen($lineheight, $fontsize, 45px);
+      }
+
+    } @else {
+      @include ng-arrow-mixin(7px);
+      @include ng-clear-mixin(4px);
+
+      .ng-value-container {
+        max-width: calc(100% - 45px);
+        @include ng-input-mixen($lineheight, $fontsize, 0px);
+
+        .ng-value {
+          padding-top: 1px;
+          padding-bottom: 1px;
+          padding-left: 3px;
+          padding-right: 3px;
+
+          .ng-value-label {
+            font-size: $fontsize;
+          }
+        }
+      }
+    }
+
+    @include ng-spinner-loader(8px, 29px);
+
+    &.ng-has-value {
+      .ng-placeholder {
+        bottom: 8px;
+      }
+    }
+  }
+}
+
+.ng-select.ng-select-multiple {
+  @include ng-select-container-mixin(false, 0.293em, 38px, $field-font-size, 12px);
+}
+
+.ng-select.ng-select-single {
+  @include ng-select-container-mixin(true, 0.293em, 38px, $field-font-size, 12px);
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  padding-bottom: 2px;
+  padding-top: 2px;
+  line-height: 2em;
+  min-height: 2em;
+  font-size: $field-font-size;
+}
+
+mat-paginator {
+  .mat-paginator-container {
+    height: 40px;
+    min-height: 40px;
+  }
+}
+
+mat-checkbox {
+  font-size: 12px;
+
+  label {
+    margin-top: -5px;
+  }
+
+  .mat-checkbox-inner-container {
+    height: 15px;
+    width: 15px;
+  }
+}
+
+mat-form-field {
+
+  /*&.compact {
+    .mat-input-wrapper {
+      padding-bottom: 0px;
+
+      .mat-input-infix {
+        padding: 0px;
+
+        mat-select {
+          padding-top: 0px;
+        }
+      }
+    }
+  }*/
+
+  .mat-form-field-wrapper {
+    font-size: $field-font-size;
+  }
+
+  .mat-select-trigger {
+    font-size: $field-font-size;
+  }
+}
+
+mat-select {
+  &.compact {
+    padding-top: 2px !important;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    background-color: #efefef;
+    border: solid 1px gainsboro;
+    border-radius: 3px;
+
+    .mat-form-field-wrapper {
+      font-size: $field-font-size;
+    }
+
+    .mat-select-trigger {
+      font-size: $field-font-size;
+    }
+  }
+}

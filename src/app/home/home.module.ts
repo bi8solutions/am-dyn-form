@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AmDynFormModule } from "../modules/am-dyn-form/am-dyn-form.module";
+import {NgSelectModule} from "@ng-select/ng-select";
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AmDynFormModule } from "../modules/am-dyn-form/am-dyn-form.module";
     ReactiveFormsModule,
     HomeRoutingModule,
     FlexLayoutModule,
-    AmDynFormModule
+    AmDynFormModule,
+    NgSelectModule
   ],
   declarations: [HomeComponent],
   exports: [HomeComponent]

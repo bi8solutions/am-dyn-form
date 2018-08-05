@@ -1,4 +1,9 @@
 import {FormControl, ValidatorFn, AsyncValidatorFn, Validators} from "@angular/forms";
+import {Observable} from "rxjs";
+
+export interface LoaderFn<A, T> {
+  (value: A) : Observable<T>
+}
 
 export abstract class DynFormControl extends FormControl {
   key: string;
@@ -17,7 +22,9 @@ export abstract class DynFormControl extends FormControl {
     dir? : string,          // the field direction (rtl, ltr)
     hint? : string,
     placeholder? : string,
-    messages? : any[]
+    messages? : any[],
+    useDefaultErrorMessages?: boolean,
+    loadFn?: LoaderFn<any, any>
 
   } = {}, validator?: ValidatorFn | ValidatorFn[] | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
     super(options.defaultValue != undefined ? options.defaultValue : null, validator, asyncValidator);
@@ -28,6 +35,12 @@ export abstract class DynFormControl extends FormControl {
       this.config.placeholder = options.placeholder;
       this.config.dir = options.dir || 'ltr';
       this.config.messages = options.messages || [];
+      this.config.useDefaultErrorMessages = options.useDefaultErrorMessages || false;
+      this.config.loadFn = options.loadFn || null;
+
+      if (this.config.loadFn){
+        this.loadValue(options.defaultValue, this.config.loadFn, {onlySelf: true});
+      }
 
       if (validator){
         if (validator instanceof Array){
@@ -113,5 +126,37 @@ export abstract class DynFormControl extends FormControl {
   }
 
   activateValidators(){
+  }
+
+  setValue(value: any, options?: {
+    onlySelf?: boolean;
+    emitEvent?: boolean;
+    emitModelToViewChange?: boolean;
+    emitViewToModelChange?: boolean;
+    loadFn?: LoaderFn<any, any>;
+  }) : void {
+
+    if (options && options.loadFn){
+      options.loadFn(value).subscribe((result)=>{
+        super.setValue(result, options);
+      });
+    } else {
+      if (value == null) {
+        super.setValue('', options);
+      } else {
+        super.setValue(value, options);
+      }
+    }
+  }
+
+  loadValue(param: any, loadFn: LoaderFn<any, any>, options?: {
+    onlySelf?: boolean;
+    emitEvent?: boolean;
+    emitModelToViewChange?: boolean;
+    emitViewToModelChange?: boolean;
+  }){
+    loadFn(param).subscribe((result)=>{
+      super.setValue(result, options);
+    });
   }
 }

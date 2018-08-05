@@ -36,11 +36,6 @@ export class DynFieldComponent implements OnInit {
     }
 
     this.path = this.resolvePath();
-
-
-    /*
-    If this is an autocomplete, then I need to register for values changes and call the filter function on the form control
-    */
   }
 
   private resolvePath() : string {
@@ -75,7 +70,24 @@ export class DynFieldComponent implements OnInit {
     }
   }
 
-  resolveValidationMessage(type){
-    return this.messages.get(type) || "";
+  resolveValidationMessage(type: string){
+    let message = "";
+    if (this.messages.has(type)){
+      message = this.messages.get(type)
+
+    } else if (this.dfc.config.useDefaultErrorMessages){
+      switch (type){
+        case 'required':
+          message = 'Value required';
+          break;
+        case 'pattern':
+          message = "Invalid format";
+          break;
+        case 'email':
+          message = "Invalid email";
+          break;
+      }
+    }
+    return message;
   }
 }

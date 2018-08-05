@@ -1,25 +1,41 @@
 <dyn-toolbar-panel header="Demo Form" fxLayout="column">
-  <!--<dyn-field-set header="Personal Details">-->
-    {{demoForm.value | json}}
 
-    <form [formGroup]="demoForm" novalidate>
-      <!--<div fxLayout="row">
-        <dyn-field name="lastName"></dyn-field>
-      </div>-->
+  <div fxLayout="column" style="background-color: blue;">
+    <div fxLayout="row" style="background-color: purple;">
+      <div style="background-color: #ffa022;" fxFlex="1 1 auto">Hello</div>
+      <div style="background-color: magenta;" fxFlex="5 1 auto">World</div>
+    </div>
+
+    <div fxLayout="row" style="background-color: green;">
+      <div>Goodbye</div>
+      <div>World</div>
+    </div>
+  </div>
+
+  <!--<dyn-field-set header="Personal Details">-->
+    <!--{{demoForm.value | json}}-->
+
+    <form [formGroup]="demoForm" novalidate style="padding-top: 15px;">
+      <div fxLayout="row" fxLayoutGap="10px">
+        <dyn-field name="avengers" fxFlex></dyn-field>
+        <dyn-field name="country" fxFlex></dyn-field>
+        <dyn-field name="users" fxFlex></dyn-field>
+        <dyn-field name="posts" fxFlex></dyn-field>
+        <!--<dyn-field name="lastName" fxFlex></dyn-field>
+        <dyn-field name="posts" fxFlex></dyn-field>-->
+        <!--<dyn-field name="superheroes" fxFlex="1 1 auto"></dyn-field>-->
+
+      </div>
       <div fxLayout="row">
-        <dyn-field name="lastName"></dyn-field>
-        <dyn-field name="heroes"></dyn-field>
+        <dyn-field name="active" fxLayoutAlign="center center"></dyn-field>
+        <!--<dyn-field name="heroes"></dyn-field>-->
         <dyn-field name="fromDate"></dyn-field>
         <dyn-field name="toDate"></dyn-field>
         <dyn-field name="time"></dyn-field>
       </div>
       <div fxLayout="row">
         <dyn-field name="firstName"></dyn-field>
-
         <dyn-field name="middleName"></dyn-field>
-      </div>
-      <div fxLayout="row">
-        <dyn-field name="country"></dyn-field>
       </div>
       <div fxLayout="row">
         <dyn-field name="comments"></dyn-field>
@@ -27,6 +43,16 @@
       <div fxLayout="row">
         <button (click)="doStuff()">Do Stuff</button>
       </div>
+
+      <ng-template #avengersLabel let-item="item">
+        {{item.name}} {{item.surname}} : {{item.slug}}
+      </ng-template>
+      <ng-template #avengersOption ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+          <span [ngOptionHighlight]="search">{{item.slug}}</span>
+      </ng-template>
     </form>
+  
+  {{demoForm.value | json}}
+
   <!--</dyn-field-set>-->
 </dyn-toolbar-panel>

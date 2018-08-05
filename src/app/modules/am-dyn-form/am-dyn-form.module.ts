@@ -29,6 +29,8 @@ import {DynFieldComponent} from "./dyn-field.component";
 import {DynToolbarPanelComponent} from "./dyn-toolbar-panel.component";
 import {DynFieldSetComponent} from "./dyn-field-set.component";
 import {AmTimepickerComponent} from "./timepicker/timepicker.component";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 @NgModule({
   imports: [
@@ -37,6 +39,7 @@ import {AmTimepickerComponent} from "./timepicker/timepicker.component";
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     MatAutocompleteModule,
     MatCardModule,
     MatButtonModule,
@@ -53,7 +56,8 @@ import {AmTimepickerComponent} from "./timepicker/timepicker.component";
     MatSidenavModule,
     MatMenuModule,
     MatTableModule,
-    MatListModule
+    MatListModule,
+    NgSelectModule
   ],
   exports: [
     DynFieldComponent,
