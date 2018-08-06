@@ -374,6 +374,7 @@ export class HomeComponent implements OnInit {
     this.demoForm = new DynFormGroup({key: 'registration'},
       {
         avengers: new DynAutoSelectControl({
+          disable: true,
           key: 'avengers',
           placeholder: 'Select your Avenger',
           bindValue: 'id',
@@ -449,6 +450,7 @@ export class HomeComponent implements OnInit {
         }, [Validators.required]),
 
         middleName: new DynTextControl({
+          disable: true,
           key: 'middleName',
           placeholder: 'Middle Name',
           maxlimit: 64

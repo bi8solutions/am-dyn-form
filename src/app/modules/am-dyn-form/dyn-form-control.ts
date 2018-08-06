@@ -24,7 +24,8 @@ export abstract class DynFormControl extends FormControl {
     placeholder? : string,
     messages? : any[],
     useDefaultErrorMessages?: boolean,
-    loadFn?: LoaderFn<any, any>
+    loadFn?: LoaderFn<any, any>,
+    disable?: boolean,
 
   } = {}, validator?: ValidatorFn | ValidatorFn[] | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
     super(options.defaultValue != undefined ? options.defaultValue : null, validator, asyncValidator);
@@ -37,9 +38,14 @@ export abstract class DynFormControl extends FormControl {
       this.config.messages = options.messages || [];
       this.config.useDefaultErrorMessages = options.useDefaultErrorMessages || false;
       this.config.loadFn = options.loadFn || null;
+      this.config.disable = options.disable || false;
 
       if (this.config.loadFn){
         this.loadValue(options.defaultValue, this.config.loadFn, {onlySelf: true});
+      }
+
+      if (this.config.disable){
+        this.disable({onlySelf: true})
       }
 
       if (validator){
