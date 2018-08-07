@@ -44,15 +44,13 @@
         <button (click)="doStuff()">Do Stuff</button>
       </div>
 
-      <ng-template #avengersLabel let-item="item">
-        {{item.name}} {{item.surname}} : {{item.slug}}
-      </ng-template>
+      <ng-template #avengersLabel let-item="item"><ng-container *ngIf="item">{{item.name}} {{item.surname}} : {{item.slug}}</ng-container></ng-template>
       <ng-template #avengersOption ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
           <span [ngOptionHighlight]="search">{{item.slug}}</span>
       </ng-template>
     </form>
   
-  {{demoForm.value | json}}
+  <pre>{{demoForm.value | json}}</pre>
 
   <!--</dyn-field-set>-->
 </dyn-toolbar-panel>

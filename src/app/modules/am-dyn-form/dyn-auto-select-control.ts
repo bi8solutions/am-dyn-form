@@ -7,8 +7,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {of} from "rxjs/internal/observable/of";
 import {TemplateRef} from "@angular/core";
 import {debounceTime, delay, distinctUntilChanged, filter, finalize, map, mergeMap, switchMap, tap} from "rxjs/operators";
-
-
+import {NgSelectComponent} from "@ng-select/ng-select";
 
 export class DynAutoSelectControl extends DynFormControl {
   type = 'autoselect';
@@ -30,6 +29,10 @@ export class DynAutoSelectControl extends DynFormControl {
   searchable: boolean = true;
 
   selectedValue: any;
+  ngSelectComponent: NgSelectComponent;
+  element: Element;
+
+  clearToggle: boolean = false;
 
   constructor(options: {} = {}, validator?: ValidatorFn | ValidatorFn[] | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
     super(options, validator, asyncValidator);
@@ -83,200 +86,23 @@ export class DynAutoSelectControl extends DynFormControl {
     }
 
     this.valueChanges.subscribe((value)=>{
+      this.checkHasValue(value);
       this.hasValue = !(!value);
     })
+  }
 
-/*
-
-    if (options['items']) {
-      if (this.async) {
-        if (this.autocomplete$) {
-          console.log("======================> [observable:typeahead] items: ", options['items']);
-
-          this.loading = true;
-          this.items$ = (options['items'] as Observable<any>).pipe(tap(()=>this.loading = false));
-
-          /!*this.items$ = concat(
-            (options['items'] as Observable<any>).pipe(
-              tap(() => this.loading = true),
-              finalize(() => this.loading = false)
-            ),
-            this.autocomplete$.pipe(
-              debounceTime(this.debounce),
-              distinctUntilChanged(),
-              tap(() => this.loading = true),
-              finalize(() => this.loading = false)
-            )
-          );*!/
+  checkHasValue(value?: any){
+    setTimeout(()=>{
+      if (this.element){
+        if (!value){
+          console.debug("removing ng-has-value");
+          this.element.classList.remove("ng-has-value");
         } else {
-          console.log("======================> [observable] items: ", options['items']);
-          //this.loading = true;
-
-          let subject = (options['items'] as ParameterSubject<any, any>);
-
-          //let observable = (options['items'] as Observable<any>);
-          //let paramSubject = options['items'] as ParameterSubject<any, any>;
-
-          this.items$ = subject.asObservable();
-          this.typeaheadInput$ = subject.asSubject();
-
-
-          this.typeaheadInput$.pipe(tap((value)=>console.log("========> ......... ", value)));
-
-
-          /!*
-          I want to pass the same stuff in that is used for the observable
-           *!/
-
-          /!*this.items$ = new Observable((sub)=>{
-            (options['items'] as Observable<any>).pipe(
-              tap((value) => {this.loading = true; console.log("=============> tap: ", value)}),
-            ).subscribe()
-            sub.next()
-          });
-
-
-
-          = new Observable((sub)=>{
-            subscribe
-
-            sub.next()
-          })
-
-            tap((blaf) => {this.loading = true; console.log("TAP TAP")}),
-            (options['items'] as Observable<any>)).pipe(finalize(() => this.loading = false))
-
-
-
-            (options['items'] as Observable<any>).pipe(
-            tap((blaf) => {this.loading = true; console.log("TAP TAP")}),
-            finalize(() => this.loading = false)
-          );*!/
+          console.debug("adding ng-has-value");
+          this.element.classList.add("ng-has-value");
         }
-      } else {
-        console.log("======================> [array] items: ", options['items']);
-        this.items$ = of(options['items']);
       }
-    }
-
-*/
-
-
-    /*
-
-          debounceTime(this.debounce),
-          distinctUntilChanged());
-
-
-        let subject = new ParameterSubject(()=>{of(this.items[])});
-
-        this.items$ = concat(
-          [],
-          this.autocomplete$.pipe()
-
-
-
-        );
-        this.items$ = ParameterSubject()
-      }
-    }*/
-
-    /*
-    if (this.autocomplete$){
-      this.autocomplete$.pipe(
-        debounceTime(this.debounce),
-        distinctUntilChanged(),
-        tap(()=>this.loading = true)).subscribe({
-          next: (term)=>{
-          },
-          complete: ()=>{
-            this.loading = false;
-          }
-      })
-    }
-    */
-
-
-    /*
-    this.ods.addPipe(this.typeaheadInput$, this.key,
-            debounceTime(200),
-            distinctUntilChanged(),
-            showLoadTappet,
-            delay(1000)
-          );
-          this.reload();
-     */
-
-
-    /*if (options['items']){
-      this.key = 'auto';
-      this.items = options['items'];
-
-      this.ods = new ObservableDS({autoconnect: true, key: this.key, obs: (term)=> {
-          if (term){
-            let result = [];
-            this.items.forEach((item)=>{
-              if (item[this.bindLabel].toLowerCase().indexOf(term) > -1){
-                result.push(item);
-              }
-            });
-            return of(result);
-          } else {
-            return of(this.items).pipe(hideLoadTappet);
-          }
-        }
-      });
-
-      this.items$ = this.ods.observe(this.key).pipe(map((items: any[])=> {
-        if (this.bindRef){
-          items.forEach((item)=>{
-            if (this.multiple && this.value instanceof Array){
-              this.value.forEach((value)=>{
-                if (value[this.bindRef] === this.value){
-                  setTimeout(()=>{
-                    this.setValue(value);
-                  });
-                  return;
-                }
-              })
-            }
-            if (item[this.bindRef] === this.value){
-              setTimeout(()=>{
-                this.setValue(item);
-              });
-              return;
-            }
-          });
-          return items;
-        }
-      }));
-
-      this.ods.addPipe(this.typeaheadInput$, this.key,
-        debounceTime(200),
-        distinctUntilChanged(),
-        showLoadTappet,
-        delay(1000)
-      );
-      this.reload();
-
-    } else if (options['dataSource']){
-      let dataSource = options['dataSource'];
-      this.ods = dataSource.ods;
-      this.key = dataSource.key;
-      this.items$ = this.ods.observe(this.key).pipe(tap((items)=>hideLoadTappet));
-      this.ods.addPipe(this.typeaheadInput$, this.key,
-        debounceTime(200),
-        distinctUntilChanged(),
-        showLoadTappet,
-        filter((value)=>{
-          return value == null ? false : value.length > 0
-        })
-      );
-    }
-
-    */
-
-    //console.log("============> optionTemplate: ", this.optionTemplate);
+    });
   }
 
   reload(param?: any){

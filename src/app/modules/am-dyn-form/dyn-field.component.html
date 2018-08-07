@@ -3,7 +3,7 @@
     <!--=====[ AUTO SELECT FIELD ]=====-->
     <ng-container *ngSwitchCase="'autoselect'">
       <div class="am-field-container" fxLayout="row" fxFlex>
-        <ng-select [items]="dfc.items$ | async"
+        <ng-select #ngselect [items]="dfc.items$ | async"
                    [formControl]="dfc"
                    [placeholder]="dfc.getCustomPlaceholder()"
                    [bindLabel]="dfc.bindLabel"

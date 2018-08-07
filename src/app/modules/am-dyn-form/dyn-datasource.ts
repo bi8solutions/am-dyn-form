@@ -110,6 +110,10 @@ export interface ChannelNotification {
   error?: any,
 }
 
+export interface NotificationFn {
+  (input: ChannelNotification)
+}
+
 export interface ParameterFn<A, T> {
   (input: A) : T
 }
@@ -125,6 +129,7 @@ export class Channel<A extends any, T extends any> {
   private notifications;
   private debug: boolean;
   private paramFn: ParameterFn<any, any>;
+  private notificationFn: NotificationFn;
 
   constructor(private fn: ObservableFn<A, T>, options?: {
     input?: Subject<A>,
@@ -132,7 +137,8 @@ export class Channel<A extends any, T extends any> {
     enabled?: boolean,
     name?: string,
     debug?: boolean,
-    paramFn?: ParameterFn<any, any>
+    paramFn?: ParameterFn<any, any>,
+    notificationFn?: NotificationFn
   }){
     if (options){
       this.input = options.input || new Subject<A>();
@@ -141,6 +147,7 @@ export class Channel<A extends any, T extends any> {
       this.name = options.name || 'channel';
       this.debug = options.debug || false;
       this.paramFn = options.paramFn;
+      this.notificationFn = options.notificationFn;
 
     } else {
       this.input = new Subject<A>();
@@ -151,7 +158,11 @@ export class Channel<A extends any, T extends any> {
     }
 
     this.notifications = new BehaviorSubject<ChannelNotification>({type: NotificationType.init});
-    this.observeNotifications().subscribe();
+    //this.observeNotifications().subscribe();
+
+    if (this.notificationFn){
+      this.observeNotifications().subscribe(this.notificationFn);
+    }
 
     this.input.pipe(
       takeWhile((value: A)=>!this.closed),

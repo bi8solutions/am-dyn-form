@@ -23,6 +23,10 @@ dyn-field-set {
 
 $field-font-size: 12px;
 
+ng-select.am-no-value .ng-select-container .ng-clear-wrapper {
+  display: none;
+}
+
 .ng-select {
   padding-bottom: 15px;
 }

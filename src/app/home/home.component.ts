@@ -361,10 +361,15 @@ export class HomeComponent implements OnInit {
     }, {
       name: 'users',
       debug: true,
-      paramFn: (value: any)=>value
+      paramFn: (value: any)=>value,
+      notificationFn: (event)=>{
+      },
     });
 
     /*
+
+
+
     */
 
     let postsChannel = new Channel((params: any)=> {
@@ -374,12 +379,11 @@ export class HomeComponent implements OnInit {
     this.demoForm = new DynFormGroup({key: 'registration'},
       {
         avengers: new DynAutoSelectControl({
-          disable: true,
           key: 'avengers',
           placeholder: 'Select your Avenger',
-          bindValue: 'id',
-          labelTemplate: this.avengerLabelTemplate,
-          optionTemplate: this.avengerOptionTemplate,
+          //bindValue: 'id',
+          //labelTemplate: this.avengerLabelTemplate,
+          //optionTemplate: this.avengerOptionTemplate,
           channel: avengersChannel.next(),
           useDefaultErrorMessages: true,
           searchable: true
@@ -523,6 +527,8 @@ export class HomeComponent implements OnInit {
     this.demoForm.get('heroes').setValue(
     { id: 3, name: "Super Hero 3" }
     );
+
+    this.demoForm.patchValue({avengers: null});
 
     //this.demoForm.get('posts').setValue(3, {loadFn: (param)=>this.appService.loadPost(param)});
 
