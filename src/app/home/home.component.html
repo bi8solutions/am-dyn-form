@@ -1,10 +1,20 @@
 <dyn-toolbar-panel header="Demo Form" fxLayout="column">
+  <!--
+  <div style="padding: 10px;">
+    <progress-bar [progress]="percentage"></progress-bar>
+  </div>
+  -->
+
+  <div fxLayout="row">
+    <am-progress-bar [value]="percentageSubject | async" fxFlex="100px"></am-progress-bar>
+  </div>
 
   <div fxLayout="column" style="background-color: blue;">
     <div fxLayout="row" style="background-color: purple;">
       <div style="background-color: #ffa022;" fxFlex="1 1 auto">Hello</div>
       <div style="background-color: magenta;" fxFlex="5 1 auto">World</div>
     </div>
+
 
     <div fxLayout="row" style="background-color: green;">
       <div>Goodbye</div>

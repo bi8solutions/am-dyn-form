@@ -1,86 +1,10 @@
 import {Subject} from "rxjs/Subject";
 
-import {defer, Observable, ReplaySubject, Subscription} from 'rxjs';
-import {debounceTime, filter, map, publish, switchMap, takeWhile, tap} from 'rxjs/operators';
+import {Observable, ReplaySubject, Subscription} from 'rxjs';
+import {filter, map, takeWhile, tap} from 'rxjs/operators';
 import {OperatorFunction} from "rxjs/interfaces";
-
-import {CollectionViewer, DataSource} from "@angular/cdk/collections";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {HttpClient} from "@angular/common/http";
 import {of} from "rxjs/internal/observable/of";
-import {AppService} from "../../home/home.service";
-import {ConnectableObservable} from "rxjs/internal/observable/ConnectableObservable";
-
-
-/*
-new Pipe();
-
-
-pipe.next()
-pipe.observe();
-
-ArrayPipe
-
-
-pipe1.link(pipe2)
-
-same as
-
-pipe1.observe().subscribe(()=> pipe2.next);
-
-export class Channel {
-
-  constructor(config: {
-    key?: any;
-    cold: boolean;
-    observers: [DSObservableFn | Observable<any>]
-    inOperators?: xxx,
-    outOperators?: xxx,
-    behave?: boolean,
-    link?: [Channel | Subject | ObservableFunction]
-    enable: false?
-
-  })
-
-  sourceOps(...operators);
-  sinkOps(...operators);
-
-  export interface
-
-  export class SingleChannel {
-  }
-
-  export class MultiChannel {
-  }
-
-  add({key: 'users', behave: false, func: DSObservableFn)
-  add({key: 'users', behave: false, func: DSObservableFn);
-  observe({ key?: 'users', type: SubType.Cold, func: DSObservableFn, value?: any}) -> if the value is specified, this will be the default value used if a value is not specified
-  next({key?: 'users', value?: any);  -> the value can be null - this simply calls the function -> next is supposed to be the value for the function
-  complete(key?: any)  -> if key is null, will complete everything
-  discard(key?: any) -> if key is null, will complete everything
-  link({outlet: Channel | Subject, ops?: OperatorFunction<any, any>[]})
-  enable();
-  disable();
-  destroy();
-  clone();
-
-  observe(skipDefault: boolean: false);
-
-  enable();
-  disable();
-  destroy();
-
-}
-
-channel.addObservable(()=> return of(['hello'])
-channel.observe().pipe()
-channel.next(bla) ->
-
-of()
-*/
-
-
 
 export interface ObservableFn<A, T> {
   (param?: A): Observable<T>;
@@ -237,7 +161,7 @@ export class Channel<A extends any, T extends any> {
     this.output.next(value);
   }
 
-  observe(value: A, ...ops: OperatorFunction<any, any>[]) : Observable<T>{
+  observe(value?: A, ...ops: OperatorFunction<any, any>[]) : Observable<T>{
     setInterval(()=>{
       this.next(value);
     });
@@ -252,11 +176,11 @@ export class Channel<A extends any, T extends any> {
     observer.pipe(...ops).subscribe((value: T)=>this.emit(value));
   }
 
-  asObservable(){
+  asObservable() : Observable<T>{
     return this.output.asObservable();
   }
 
-  observeNotifications(){
+  observeNotifications() : Observable<ChannelNotification>{
     return this.notifications.asObservable();
   }
 
@@ -277,12 +201,14 @@ export class Channel<A extends any, T extends any> {
     this.notifications.next(notification);
   }
 
-  enable(){
+  enable() : Channel<A, T> {
     this.enabled = false;
+    return this;
   }
 
-  disable(){
+  disable() : Channel<A, T> {
     this.enabled = true;
+    return this;
   }
 
   close(){
@@ -292,195 +218,89 @@ export class Channel<A extends any, T extends any> {
   }
 }
 
-export enum ObserveType { cold, hot }
+export class ChannelSwitch {
+  private channels = new Map<any, Channel<any, any>>();
 
-export interface IChannel {
-
-
-  /*
-  let channel = new Channel();
-  channel.add({
-    func: ()=> return of([1,2,3]),
-  });
-
-  channel.observe({
-    behave: true,
-    input: 1,
-    func: (userId)=>return of([1,2,3]),
-    ops: map((items=>return items.splice(1)))
-
-  }).subscribe()
-
-  channel.add({
-    key: 'users',
-    func: ()=> return of([1,2,3]),
-  });
-
-  channel.observe({
-    key: 'users'
-    sub: SubType.hot,
-    trigger: { param: 1 }
-  }).subscribe()
-
-  channel.observe(){
-    key: 'users'
-    sub: SubType.cold,
-    behave: true        // this will also execute imediately
+  constructor(...channels : {key: any, channel: Channel<any,any>}[]){
+    channels.forEach((config)=>{
+      this.channels.set(config.key, config.channel);
+    })
   }
 
-  channel.observe(){
-    key: 'users',
-    source: {
-      func: ()=> return of([1,2,3])
-    }
-    sub: SubType.cold,
-    behave: true        // this will also execute imediately
+  set(key: any, channel: Channel<any, any>) : Channel<any, any>{
+    this.channels.set(key, channel);
+    return channel;
   }
 
-  channel.setAndObserve({ func: this.appService.findPosts, param: 1, trigger: true}).observe()
-  channel.setAndObserve({ func: this.appService.findUsers, trigger: true}).observe()
-  channel.setAndObserve({ func: this.appService.findUsers }).observe()
-  channel.setAndObserve({ func: ()=>of([1,2,3] }).observe()
-  channel.setAndObserve({ func: ()=>of([1,2,3], trigger: false}).observe()
-  channel.setAndObserve({ key: 'my-numbers', func: ()=>of([1,2,3], trigger: false}).observe()
-  channel.set({ key: 'my-numbers', func: (favorite)=>of([1,2,3]), behave: true;});
-  channel.next({key: 'my-numbers', 2);
-  channel.observe({key: 'my-numbers', ObserveType.hot}).subscribe()
-
-  let userChannel = new Channel({
-    func: ()=>of([1,2,3])   // cold
-  })
-
-  userChannel.observe().subscribe()
-  userChannel.observe().subscribe()
-  userChannel.observe().subscribe()
-
-  userChannel.next();
-  userChannel.disable();
-  userChannel.next();
-  userChannel.disable();
-
-  CombinedChannel {
-    channels
-
-    enable();
-    disable();
-    close();
+  get(key: any) : Channel<any, any> {
+    return this.channels.get(key);
   }
 
-  link(options: {
-    outlet: IChannel | Subject<any>,        basically, we link to the observable
-    ops?: OperatorFunction<any, any>[]
-  });
+  isBusy(key: any) : boolean {
+    let channel = this.channels.get(key);
+    return channel ? channel.isBusy() : false;
+  }
 
-  userChannel.link({
-    key: any,
-    ops: [map(()=>, filter(()))
+  isInputBusy(key: any){
+    let channel = this.channels.get(key);
+    return channel ? channel.isInputBusy() : false;
+  }
 
-  )
+  isOutputBusy(key: any){
+    let channel = this.channels.get(key);
+    return channel ? channel.isOutputBusy() : false;
+  }
 
-  let channelLink = userChannel.link({
-    key?: 'findUsers'
-    channel: postChannel,
-    ops: [filter(()=>{}), map(()=>{}))
-  });
+  next(key: any, value?: any) : Channel<any, any> {
+    let channel = this.channels.get(key);
+    return channel ? channel.next(value) : null;
+  }
 
-  let channelPipe = userChannel.pipe({
-    key?: 'findUsers',
-    sub: Subscription<any>,
-    ops: [filter(()=>{}, map(()=>{}))
-  });
+  emit(key: any, value: any){
+    let channel = this.channels.get(key);
+    return channel ? channel.emit(value) : false;
+  }
 
-  channelPipe.enable()
-  channelPipe.disable()
-  channelPipe.close();
+  observe(key: any, value?: any, ...ops: OperatorFunction<any, any>[]) : Observable<any>{
+    let channel = this.channels.get(key);
+    return channel ? channel.observe(value, ...ops) : null;
+  }
 
-    key?: 'findUsers',
-  });
+  link(key: any, observer: Observable<any>, ...ops: OperatorFunction<any, any>[]){
+    let channel = this.channels.get(key);
+    if (channel) channel.link(observer, ...ops);
+  }
 
+  pipe(key: any, observer: Observable<any>, ...ops: OperatorFunction<any, any>[]){
+    let channel = this.channels.get(key);
+    if (channel) channel.pipe(observer, ...ops);
+  }
 
-  Channel
-  ChannelSwitch
+  asObservable(key: any) : Observable<any> {
+    let channel = this.channels.get(key);
+    return channel ? channel.asObservable() : null;
+  }
 
+  observeNotifications(key: any) : Observable<ChannelNotification> {
+    let channel = this.channels.get(key);
+    return channel ? channel.observeNotifications() : null;
+  }
 
+  enable(key: any) : Channel<any, any> {
+    let channel = this.channels.get(key);
+    return channel ? channel.enable() : null;
+  }
 
+  disable(key: any)  : Channel<any, any> {
+    let channel = this.channels.get(key);
+    return channel ? channel.disable() : null;
+  }
 
-
-
-
-
-  */
-
-  set(options: {
-    key?: any,
-    func: DSObservableFn,
-    type?: ObserveType,
-  });
-
-  setAndObserve(options: {
-    key?: any,
-    type?: ObserveType,
-    func: DSObservableFn,
-    ops?: OperatorFunction<any, any>[],
-    params?: any,
-    trigger?: boolean
-  });
-
-  observe(options: {
-    key?: any,
-    type?: ObserveType,
-    behave?: boolean,
-    ops?: OperatorFunction<any, any>[]
-  }) : Observable<any>;
-
-  link(options: {
-    key?: any,
-    sink: {
-      channel: IChannel,
-      key?: any
-    },
-    behave?: boolean,
-    ops?: OperatorFunction<any, any>[]
-  }) : IChannel;
-
-  pipe(options: {
-    observable: Observable<any>,
-    key?: any,
-    behave?: boolean,
-    ops?: OperatorFunction<any, any>[]
-  }) : IChannel;
-
-  next(options?: {
-    key?: any,
-    value?: any
-  });
-
-  enable(key?: any);
-  disable(key?: any);
-  complete(key?: any);
-  discard(key?: any);
-
-  /**
-   * Closes this channel, un-subscribes from everything basically destroyes itself - it cannot be used anymore when it's destroyed/closed
-   */
-  close();
-
-  /**
-   * Will copy all the subscriptions, etc but will be in a disabled state - only copies the function references
-   */
-  copy();
-
-
-  /*
-  input$.subscribe((param)=>{
-
-  })
-
-  channel -> can be observed, but it's never the input that observed, only the output
-  channel.next(value) -> added to the input - the subscription on the input calls the function - any subscribers
-  */
+  close(key: any) {
+    let channel = this.channels.get(key);
+    return channel ? channel.close() : null;
+  }
 }
-
 
 export interface DSObservableFn {
   (value?: any): Observable<any>;
@@ -649,8 +469,6 @@ export class ObservableDS implements IObservableDS {
 
     let duff = new Subject();
     blaf.add(duff.asObservable().subscribe());
-
-
   }
 
   next(key: any, value: any, options?: DSInputOptions): void {

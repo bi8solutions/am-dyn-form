@@ -17,7 +17,7 @@ import {TimeValidator} from "../modules/am-dyn-form/dyn-validators";
 import {DynAutoSelectControl} from "../modules/am-dyn-form/dyn-auto-select-control";
 import {delay, filter, map, multicast, publish, tap} from "rxjs/operators";
 import {AppKeys, AppService, avengers} from "./home.service";
-import {Channel, ObservableDS} from "../modules/am-dyn-form/dyn-datasource";
+import {Channel, ChannelSwitch, ObservableDS} from "../modules/am-dyn-form/dyn-datasource";
 import {of} from "rxjs/internal/observable/of";
 import {Subject} from "rxjs";
 import {interval} from "rxjs/internal/observable/interval";
@@ -123,11 +123,19 @@ export class HomeComponent implements OnInit {
   @ViewChild('avengersOption') avengerOptionTemplate : TemplateRef<any>;
   ods: ObservableDS;
 
+  percentage: number = 0;
+  percentageSubject = new Subject<any>();
+
   constructor(private appService: AppService) {
     this.ods = this.appService.asODS();
   }
 
   ngOnInit() {
+    interval(1000).subscribe(()=>{
+      this.percentageSubject.next(this.percentage);
+      this.percentage += 1
+    });
+
 /*
     let userPostsSearch = new ParameterSubject((userId: number)=>this.appService.findUserPosts(userId));
     userPostsSearch.subscribe((items)=>{ console.log("==============> posts: ", items) });
@@ -366,7 +374,16 @@ export class HomeComponent implements OnInit {
       },
     });
 
+
+
+
     /*
+    Channel can be a mixin on a subject?
+
+
+    let channel = new ChannelSubject(subject);
+
+
 
 
 
@@ -532,8 +549,6 @@ export class HomeComponent implements OnInit {
 
     //this.demoForm.get('posts').setValue(3, {loadFn: (param)=>this.appService.loadPost(param)});
 
-    //this.demoForm.get('posts').disable();
-
     postsChannel.link(this.demoForm.get('users').valueChanges,
       filter((value)=>{
         if (value && value.id){
@@ -554,6 +569,54 @@ export class HomeComponent implements OnInit {
     );
 
     this.demoForm.get("heroes").updateValueAndValidity();
+
+    let channelSwitch = new ChannelSwitch(
+      {key: 'posts', channel: postsChannel},
+      {key: '', channel: avengersChannel},
+      {key: '', channel: usersChannel},
+    );
+
+    channelSwitch.set('piet', avengersChannel);
+    channelSwitch.set('pompies', avengersChannel);
+    channelSwitch.set('stuffies', avengersChannel);
+
+    let $s = 'duff';
+    /*
+    subject()
+
+
+    let channel = factory.createChannel(observable);
+    channel._next(value)
+    channel._emit()
+
+    let channel = factory.createChannel(subject, {debug: true, paramFunc, });
+    channel.$next(value);
+    channel.$emit();
+    channel.$subscribe();
+    channel.$asObservable();
+
+
+
+    Ok, maar wat gaan dit my nou help
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ChannelObservable(Observable)
+
+
+    */
+
+
   }
 
   doStuff(){

@@ -16,3 +16,5 @@ export * from "./app/modules/am-dyn-form/dyn-toolbar-panel.component";
 export * from "./app/modules/am-dyn-form/dyn-validators";
 export * from './app/modules/am-dyn-form/dyn-hidden-control';
 export * from './app/modules/am-dyn-form/dyn-datasource';
+export * from './app/modules/am-dyn-form/progress-bar.component';
+export * from './app/modules/am-dyn-form/channel';
