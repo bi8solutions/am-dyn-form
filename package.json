@@ -1,6 +1,6 @@
 {
   "name": "@bi8/am-dyn-form",
-  "version": "6.1.11",
+  "version": "6.1.12",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -30,10 +30,9 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "@bi8/am-io": "^6.1.0",
     "@bi8/am-storage": "^6.1.0",
     "@ng-select/ng-select": "^2.3.6",
-    "angular-progress-bar": "^1.0.5",
-    "angular2-uuid": "^1.1.1",
     "core-js": "^2.5.4",
     "lodash": "^4.17.10",
     "material-design-icons": "^3.0.1",

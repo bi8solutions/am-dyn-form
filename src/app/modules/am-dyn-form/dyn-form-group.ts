@@ -1,6 +1,15 @@
-import {FormControl, ValidatorFn, AsyncValidatorFn, FormGroup, AbstractControl} from "@angular/forms";
-import {DynFormArray} from "./dyn-form-array";
-import {DynFormControl} from "./dyn-form-control";
+import {FormGroup, AbstractControl} from "@angular/forms";
+import {OperatorFunction} from "rxjs/interfaces";
+import {filter, tap} from "rxjs/operators";
+import {Observable} from "rxjs";
+
+export interface FilterFn {
+  (value: any) : boolean
+}
+
+export interface MapFn {
+  (value: any) : any
+}
 
 export class DynFormGroup extends FormGroup {
   key: string;
@@ -17,4 +26,58 @@ export class DynFormGroup extends FormGroup {
       this.dir = options.dir || '';
     }
   }
+
+  addSlaveObserver(master: string, slave: string, options?: {
+    apply?: boolean,
+    disable?: boolean,
+    reset?: boolean,
+    ops?: OperatorFunction<any, any>[]
+  }) : Observable<any> {
+
+    let masterField = this.get(master);
+    let slaveField = this.get(slave);
+
+    if (!options){
+      options = { disable: true, reset: true, apply: true }
+    } else {
+      if (options.reset === undefined){
+        options.reset = true;
+      }
+
+      if (options.disable === undefined){
+        options.disable = true;
+      }
+
+      if (options.apply === undefined){
+        options.apply = options.disable;
+      }
+    }
+
+    let ops: OperatorFunction<any, any>[] = [];
+
+    if (options.reset){
+      ops.push(tap(()=>slaveField.reset()));
+    }
+
+    if (options.disable){
+      ops.push(tap(()=>slaveField.disable()));
+      if (options.apply){
+        slaveField.disable({onlySelf: true});
+      }
+    }
+
+    ops.push(filter((value)=>!!value));
+
+    if (options.disable){
+      ops.push(tap(()=>slaveField.enable()))
+    }
+
+    if (options.ops){
+      ops.push(...options.ops);
+    }
+
+    return masterField.valueChanges.pipe(...ops);
+  }
 }
+
+

@@ -55,7 +55,7 @@ export class DynFieldComponent implements OnInit, AfterContentInit, AfterViewIni
   }
 
   ngAfterViewInit(): void {
-    let bling = this.elRef.nativeElement.querySelector('.ng-has-value');
+    let bling = this.elRef.nativeElement.querySelector('.ng-select-container');
     if (bling){
       if (this.dfc instanceof DynAutoSelectControl){
         (this.dfc as DynAutoSelectControl).element = bling;

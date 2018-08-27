@@ -197,6 +197,29 @@
   dependencies:
     tslib "^1.9.0"
 
+"@bi8/am-io@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@bi8/am-io/-/am-io-6.1.0.tgz#499597e873890ef90b7de98690d7aa35dc9f584f"
+  dependencies:
+    "@angular/animations" "^6.1.0"
+    "@angular/cdk" "^6.4.2"
+    "@angular/common" "^6.1.0"
+    "@angular/compiler" "^6.1.0"
+    "@angular/core" "^6.1.0"
+    "@angular/forms" "^6.1.0"
+    "@angular/http" "^6.1.0"
+    "@angular/material" "^6.4.2"
+    "@angular/platform-browser" "^6.1.0"
+    "@angular/platform-browser-dynamic" "^6.1.0"
+    "@angular/router" "^6.1.0"
+    angular2-uuid "^1.1.1"
+    core-js "^2.5.4"
+    lodash "^4.17.10"
+    rxjs "^6.0.0"
+    rxjs-compat "^6.0.0"
+    tslib "^1.9.0"
+    zone.js "~0.8.26"
+
 "@bi8/am-storage@^6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@bi8/am-storage/-/am-storage-6.1.0.tgz#46d38a2fbca0cbc89b00bbb0c161519d296c35e7"
@@ -512,12 +535,6 @@ align-text@^0.1.1, align-text@^0.1.3:
 amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
-
-angular-progress-bar@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/angular-progress-bar/-/angular-progress-bar-1.0.5.tgz#7a1b280f6e4430ec3a10a091a4464e5fe0392908"
-  dependencies:
-    tslib "^1.9.0"
 
 angular2-uuid@^1.1.1:
   version "1.1.1"

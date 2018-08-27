@@ -31,8 +31,6 @@ import {DynFieldSetComponent} from "./dyn-field-set.component";
 import {AmTimepickerComponent} from "./timepicker/timepicker.component";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {ProgressBarModule} from "angular-progress-bar";
-import {AmProgressBar} from "./progress-bar.component";
 
 @NgModule({
   imports: [
@@ -59,22 +57,19 @@ import {AmProgressBar} from "./progress-bar.component";
     MatMenuModule,
     MatTableModule,
     MatListModule,
-    NgSelectModule,
-    ProgressBarModule
+    NgSelectModule
   ],
   exports: [
     DynFieldComponent,
     DynFieldSetComponent,
     DynToolbarPanelComponent,
-    AmTimepickerComponent,
-    AmProgressBar
+    AmTimepickerComponent
   ],
   declarations: [
     DynFieldComponent,
     DynFieldSetComponent,
     DynToolbarPanelComponent,
-    AmTimepickerComponent,
-    AmProgressBar
+    AmTimepickerComponent
   ],
   providers: [DynFormService]
 })

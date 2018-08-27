@@ -1,13 +1,11 @@
 import {ValidatorFn, AsyncValidatorFn} from "@angular/forms";
-import {DynFormControl, LoaderFn} from "./dyn-form-control";
-import {concat, Observable, pipe} from "rxjs";
-import {Channel, ChannelNotification, IObservableDS, NotificationType, ObservableDS} from "./dyn-datasource";
+import {DynFormControl} from "./dyn-form-control";
+import {Observable} from "rxjs";
 import {Subject} from "rxjs/Subject";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {of} from "rxjs/internal/observable/of";
 import {TemplateRef} from "@angular/core";
-import {debounceTime, delay, distinctUntilChanged, filter, finalize, map, mergeMap, switchMap, tap} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, tap} from "rxjs/operators";
 import {NgSelectComponent} from "@ng-select/ng-select";
+import {Channel, EventType} from "@bi8/am-io";
 
 export class DynAutoSelectControl extends DynFormControl {
   type = 'autoselect';
@@ -63,10 +61,9 @@ export class DynAutoSelectControl extends DynFormControl {
 
     if (options['channel']) {
       this.channel = options['channel'];
-      this.channel.observeNotifications().subscribe((notification: ChannelNotification)=>{
-        switch(notification.type){
-          case NotificationType.inputNext:
-          case NotificationType.busy:
+      this.channel.asEventObservable().subscribe((event: any)=>{
+        switch(event.observeType){
+          case EventType.on_next:
             this.loading = true;
             break;
           default:
@@ -77,7 +74,7 @@ export class DynAutoSelectControl extends DynFormControl {
 
       if (this.searchable){
         this.typeahead$ = new Subject();
-        this.channel.link(this.typeahead$, debounceTime(this.debounce), distinctUntilChanged());
+        this.typeahead$.pipe(debounceTime(this.debounce), distinctUntilChanged()).subscribe(this.channel);
       } else {
         this.typeahead$ = null;
       }
@@ -88,17 +85,17 @@ export class DynAutoSelectControl extends DynFormControl {
     this.valueChanges.subscribe((value)=>{
       this.checkHasValue(value);
       this.hasValue = !(!value);
-    })
+    });
+
+    this.channel.next();
   }
 
   checkHasValue(value?: any){
     setTimeout(()=>{
       if (this.element){
         if (!value){
-          console.debug("removing ng-has-value");
           this.element.classList.remove("ng-has-value");
         } else {
-          console.debug("adding ng-has-value");
           this.element.classList.add("ng-has-value");
         }
       }
