@@ -7,7 +7,6 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AmDynFormModule } from "../modules/am-dyn-form/am-dyn-form.module";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {ProgressBarModule} from "angular-progress-bar";
 
 @NgModule({
   imports: [
@@ -18,8 +17,7 @@ import {ProgressBarModule} from "angular-progress-bar";
     HomeRoutingModule,
     FlexLayoutModule,
     AmDynFormModule,
-    NgSelectModule,
-    ProgressBarModule
+    NgSelectModule
   ],
   declarations: [HomeComponent],
   exports: [HomeComponent]

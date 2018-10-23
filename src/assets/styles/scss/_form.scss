@@ -1,3 +1,5 @@
+@import "~@ng-select/ng-select/themes/material.theme.css";
+
 .no-text-wrap {
   white-space: nowrap;
 }
@@ -87,7 +89,7 @@ ng-select.am-no-value .ng-select-container .ng-clear-wrapper {
     position: absolute;
     right: $right;
     //bottom: $bottom;
-    bottom: 10px !important;
+    bottom: $bottom !important;
   }
 }
 
@@ -191,12 +193,27 @@ ng-select.ng-select-multiple {
 ng-select.ng-select-single {
   @include ng-select-container-mixin(true, 0.293em, 38px, $field-font-size, 12px);
 }
+
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   padding-bottom: 2px;
   padding-top: 2px;
   line-height: 2em;
   min-height: 2em;
   font-size: $field-font-size;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value  {
+  font-size: 10px;
+  line-height: 13px;
+  background-color: #e60000;
+
+  .ng-value-label {
+    font-size: 10px;
+    line-height: 13px;
+    padding: 2px;
+    margin: 0;
+
+  }
 }
 
 mat-paginator {

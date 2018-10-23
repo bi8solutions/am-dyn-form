@@ -5,6 +5,8 @@ export interface LoaderFn<A, T> {
   (value: A) : Observable<T>
 }
 
+export type DYN_FIELD_APPEARANCE = 'legacy' | 'standard' | 'fill' | 'outline'
+
 export abstract class DynFormControl extends FormControl {
   key: string;
   type: string;
@@ -26,6 +28,8 @@ export abstract class DynFormControl extends FormControl {
     useDefaultErrorMessages?: boolean,
     loadFn?: LoaderFn<any, any>,
     disable?: boolean,
+    appearance?: DYN_FIELD_APPEARANCE
+    compact?: boolean
 
   } = {}, validator?: ValidatorFn | ValidatorFn[] | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
     super(options.defaultValue != undefined ? options.defaultValue : null, validator, asyncValidator);
@@ -39,6 +43,8 @@ export abstract class DynFormControl extends FormControl {
       this.config.useDefaultErrorMessages = options.useDefaultErrorMessages || false;
       this.config.loadFn = options.loadFn || null;
       this.config.disable = options.disable || false;
+      this.config.appearance = options.appearance || 'standard';
+      this.config.compact = options.compact === undefined ? true : options.compact;
 
       if (this.config.loadFn){
         this.loadValue(options.defaultValue, this.config.loadFn, {onlySelf: true});

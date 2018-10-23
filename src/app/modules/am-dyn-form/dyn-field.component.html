@@ -15,8 +15,8 @@
                    fxFlex="1 1 auto"
                    [ngClass]="{'am-has-value': dfc.hasValue, 'am-no-value' : !dfc.hasValue}"
                    style="width: 100px;">
-          <ng-template ng-label-tmp let-item="item" *ngIf="dfc.labelTemplate">
-            <ng-container [ngTemplateOutlet]="dfc.labelTemplate" [ngTemplateOutletContext]="{item: item}"></ng-container>
+          <ng-template ng-label-tmp let-item="item" *ngIf="dfc.labelTemplate" let-clear="clear">
+            <ng-container [ngTemplateOutlet]="dfc.labelTemplate" [ngTemplateOutletContext]="{item: item, clear: clear}"></ng-container>
           </ng-template>
 
           <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm" *ngIf="dfc.optionTemplate">

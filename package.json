@@ -1,6 +1,6 @@
 {
   "name": "@bi8/am-dyn-form",
-  "version": "6.1.12",
+  "version": "6.1.14",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

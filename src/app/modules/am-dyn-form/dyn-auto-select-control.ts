@@ -93,7 +93,7 @@ export class DynAutoSelectControl extends DynFormControl {
   checkHasValue(value?: any){
     setTimeout(()=>{
       if (this.element){
-        if (!value){
+        if (!value || value.length === 0) {
           this.element.classList.remove("ng-has-value");
         } else {
           this.element.classList.add("ng-has-value");

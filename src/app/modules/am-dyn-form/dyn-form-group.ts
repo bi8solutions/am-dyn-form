@@ -66,7 +66,13 @@ export class DynFormGroup extends FormGroup {
       }
     }
 
-    ops.push(filter((value)=>!!value));
+    ops.push(filter((value)=>{
+      if (!value){
+        return false;
+      } else {
+        return value instanceof Array ? value.length > 0 : true
+      }
+    }));
 
     if (options.disable){
       ops.push(tap(()=>slaveField.enable()))
