@@ -1,10 +1,8 @@
-import {Subject} from "rxjs/Subject";
-
-import {Observable, ReplaySubject, Subscription} from 'rxjs';
+import {Subject, Observable, ReplaySubject, Subscription, OperatorFunction, BehaviorSubject} from 'rxjs';
 import {filter, map, takeWhile, tap} from 'rxjs/operators';
-import {OperatorFunction} from "rxjs/interfaces";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {of} from "rxjs/internal/observable/of";
+import {of} from 'rxjs/internal/observable/of';
+import {pipe} from 'rxjs';
+import {pipeFromArray} from 'rxjs/internal/util/pipe';
 
 export interface ObservableFn<A, T> {
   (param?: A): Observable<T>;
@@ -39,7 +37,7 @@ export interface NotificationFn {
 }
 
 export interface ParameterFn<A, T> {
-  (input: A) : T
+  (input: A): T
 }
 
 export class Channel<A extends any, T extends any> {
@@ -63,8 +61,8 @@ export class Channel<A extends any, T extends any> {
     debug?: boolean,
     paramFn?: ParameterFn<any, any>,
     notificationFn?: NotificationFn
-  }){
-    if (options){
+  }) {
+    if (options) {
       this.input = options.input || new Subject<A>();
       this.output = options.output || new ReplaySubject<T>(1);
       this.enabled = options.enabled || true;
@@ -84,107 +82,108 @@ export class Channel<A extends any, T extends any> {
     this.notifications = new BehaviorSubject<ChannelNotification>({type: NotificationType.init});
     //this.observeNotifications().subscribe();
 
-    if (this.notificationFn){
+    if (this.notificationFn) {
       this.observeNotifications().subscribe(this.notificationFn);
     }
 
     this.input.pipe(
-      takeWhile((value: A)=>!this.closed),
-      filter((value: A)=>this.enabled),
-      map((input)=>{
-        this.emitNotification({ type: NotificationType.busy});
+      takeWhile((value: A) => !this.closed),
+      filter((value: A) => this.enabled),
+      map((input) => {
+        this.emitNotification({type: NotificationType.busy});
         if (this.paramFn) {
-          let result =  this.paramFn(input);
-          this.emitNotification({ type: NotificationType.paramFunc, data: {before: input, after: result}});
+          let result = this.paramFn(input);
+          this.emitNotification({type: NotificationType.paramFunc, data: {before: input, after: result}});
           return result;
         } else {
           return input;
         }
       }),
-      tap((data)=>{
+      tap((data) => {
         this.inputBusy = true;
-        this.emitNotification({ type: NotificationType.inputNext, data: data});
+        this.emitNotification({type: NotificationType.inputNext, data: data});
       })
     ).subscribe({
-      next: (value: A)=>{
+      next: (value: A) => {
         try {
           this.outputBusy = true;
           let observable = this.fn(value);
-          
-          observable.pipe(tap((data)=>{
+
+          observable.pipe(tap((data) => {
             this.emitNotification({type: NotificationType.outputNext, data: data});
 
           })).subscribe({
-            next: (response) =>this.output.next(response),
-            error: (err) =>{
-              this.emitNotification({ type: NotificationType.outputError, error: err});
+            next: (response) => this.output.next(response),
+            error: (err) => {
+              this.emitNotification({type: NotificationType.outputError, error: err});
               this.output.error(err);
             },
-            complete: ()=> {
+            complete: () => {
               this.outputBusy = false;
-              this.emitNotification({ type: NotificationType.outputComplete});
-              this.emitNotification({ type: NotificationType.idle});
+              this.emitNotification({type: NotificationType.outputComplete});
+              this.emitNotification({type: NotificationType.idle});
             }
           });
-        } catch (err){
-          this.emitNotification({ type: NotificationType.outputFuncError, error: err});
+        } catch (err) {
+          this.emitNotification({type: NotificationType.outputFuncError, error: err});
           this.outputBusy = false;
         }
       },
-      error: (err: any)=> {
-        this.emitNotification({ type: NotificationType.outputFuncError, error: err});
+      error: (err: any) => {
+        this.emitNotification({type: NotificationType.outputFuncError, error: err});
       },
-      complete: ()=> {
+      complete: () => {
         this.inputBusy = false
       }
     });
   }
 
-  isBusy(){
+  isBusy() {
     return this.inputBusy || this.outputBusy;
   }
 
-  isInputBusy(){
+  isInputBusy() {
     return this.inputBusy;
   }
 
-  isOutputBusy(){
+  isOutputBusy() {
     return this.outputBusy;
   }
 
-  next(value?: A) : Channel<A, T> {
+  next(value?: A): Channel<A, T> {
     this.input.next(value);
     return this;
   }
 
-  emit(value: T){
+  emit(value: T) {
     this.output.next(value);
   }
 
-  observe(value?: A, ...ops: OperatorFunction<any, any>[]) : Observable<T>{
-    setInterval(()=>{
+  observe(value?: A, ...ops: OperatorFunction<any, any>[]): Observable<T> {
+    setInterval(() => {
       this.next(value);
     });
-    return this.output.pipe(...ops);
+
+    return this.output.pipe(pipeFromArray([...ops]));
   }
 
-  link(observer: Observable<A>, ...ops: OperatorFunction<any, any>[]){
-    observer.pipe(...ops).subscribe((value: A)=>this.next(value));
+  link(observer: Observable<A>, ...ops: OperatorFunction<any, any>[]) {
+    observer.pipe(pipeFromArray([...ops])).subscribe((value: A) => this.next(value));
   }
 
-  pipe(observer: Observable<T>, ...ops: OperatorFunction<any, any>[]){
-    observer.pipe(...ops).subscribe((value: T)=>this.emit(value));
+  pipe(observer: Observable<T>, ...ops: OperatorFunction<any, any>[]) {
+    observer.pipe(pipeFromArray([...ops])).subscribe((value: T) => this.emit(value));
   }
 
-  asObservable() : Observable<T>{
+  asObservable(): Observable<T> {
     return this.output.asObservable();
   }
 
-  observeNotifications() : Observable<ChannelNotification>{
+  observeNotifications(): Observable<ChannelNotification> {
     return this.notifications.asObservable();
   }
 
-  protected emitNotification(notification: ChannelNotification){
+  protected emitNotification(notification: ChannelNotification) {
     notification.name = this.name;
     if (this.debug) {
       switch (notification.type) {
@@ -201,17 +200,17 @@ export class Channel<A extends any, T extends any> {
     this.notifications.next(notification);
   }
 
-  enable() : Channel<A, T> {
+  enable(): Channel<A, T> {
     this.enabled = false;
     return this;
   }
 
-  disable() : Channel<A, T> {
+  disable(): Channel<A, T> {
     this.enabled = true;
     return this;
   }
 
-  close(){
+  close() {
     this.closed = true;
     this.input.unsubscribe();
     this.output.unsubscribe();
@@ -221,77 +220,81 @@ export class Channel<A extends any, T extends any> {
 export class ChannelSwitch {
   private channels = new Map<any, Channel<any, any>>();
 
-  constructor(...channels : {key: any, channel: Channel<any,any>}[]){
-    channels.forEach((config)=>{
+  constructor(...channels: { key: any, channel: Channel<any, any> }[]) {
+    channels.forEach((config) => {
       this.channels.set(config.key, config.channel);
     })
   }
 
-  set(key: any, channel: Channel<any, any>) : Channel<any, any>{
+  set(key: any, channel: Channel<any, any>): Channel<any, any> {
     this.channels.set(key, channel);
     return channel;
   }
 
-  get(key: any) : Channel<any, any> {
+  get(key: any): Channel<any, any> {
     return this.channels.get(key);
   }
 
-  isBusy(key: any) : boolean {
+  isBusy(key: any): boolean {
     let channel = this.channels.get(key);
     return channel ? channel.isBusy() : false;
   }
 
-  isInputBusy(key: any){
+  isInputBusy(key: any) {
     let channel = this.channels.get(key);
     return channel ? channel.isInputBusy() : false;
   }
 
-  isOutputBusy(key: any){
+  isOutputBusy(key: any) {
     let channel = this.channels.get(key);
     return channel ? channel.isOutputBusy() : false;
   }
 
-  next(key: any, value?: any) : Channel<any, any> {
+  next(key: any, value?: any): Channel<any, any> {
     let channel = this.channels.get(key);
     return channel ? channel.next(value) : null;
   }
 
-  emit(key: any, value: any){
+  emit(key: any, value: any) {
     let channel = this.channels.get(key);
     return channel ? channel.emit(value) : false;
   }
 
-  observe(key: any, value?: any, ...ops: OperatorFunction<any, any>[]) : Observable<any>{
+  observe(key: any, value?: any, ...ops: OperatorFunction<any, any>[]): Observable<any> {
     let channel = this.channels.get(key);
     return channel ? channel.observe(value, ...ops) : null;
   }
 
-  link(key: any, observer: Observable<any>, ...ops: OperatorFunction<any, any>[]){
+  link(key: any, observer: Observable<any>, ...ops: OperatorFunction<any, any>[]) {
     let channel = this.channels.get(key);
-    if (channel) channel.link(observer, ...ops);
+    if (channel) {
+      channel.link(observer, ...ops);
+    }
   }
 
-  pipe(key: any, observer: Observable<any>, ...ops: OperatorFunction<any, any>[]){
+  pipe(key: any, observer: Observable<any>, ...ops: OperatorFunction<any, any>[]) {
     let channel = this.channels.get(key);
-    if (channel) channel.pipe(observer, ...ops);
+    if (channel) {
+      channel.pipe(observer, ...ops);
+    }
   }
 
-  asObservable(key: any) : Observable<any> {
+  asObservable(key: any): Observable<any> {
     let channel = this.channels.get(key);
     return channel ? channel.asObservable() : null;
   }
 
-  observeNotifications(key: any) : Observable<ChannelNotification> {
+  observeNotifications(key: any): Observable<ChannelNotification> {
     let channel = this.channels.get(key);
     return channel ? channel.observeNotifications() : null;
   }
 
-  enable(key: any) : Channel<any, any> {
+  enable(key: any): Channel<any, any> {
     let channel = this.channels.get(key);
     return channel ? channel.enable() : null;
   }
 
-  disable(key: any)  : Channel<any, any> {
+  disable(key: any): Channel<any, any> {
     let channel = this.channels.get(key);
     return channel ? channel.disable() : null;
   }
@@ -336,63 +339,80 @@ export interface DSEvent {
 export class DSPipe {
 
   private sub: Subscription;
+
   constructor(private ds: IObservableDS,
               private key: any,
               private obs: Observable<any>,
               private ops: OperatorFunction<any, any>[],
-              private enabled: boolean = true){
+              private enabled: boolean = true) {
     this.connect();
   }
 
-  isConnected() : boolean {
+  isConnected(): boolean {
     return !(!this.sub);
   }
 
-  connect(){
-    if (this.isConnected()) return;
+  connect() {
+    if (this.isConnected()) {
+      return;
+    }
 
-    this.sub = this.obs.pipe(...this.ops).subscribe((value)=>{
+    this.sub = this.obs.pipe(pipeFromArray([...this.ops])).subscribe((value) => {
       console.log(`----> pipe (${this.key})`, value);
       this.ds.next(this.key, value);
     })
   }
 
-  disconnect(){
-    if (!this.isConnected()) return;
+  disconnect() {
+    if (!this.isConnected()) {
+      return;
+    }
     this.sub.unsubscribe();
   }
 
-  setOperators(...ops: OperatorFunction<any, any>[]){
+  setOperators(...ops: OperatorFunction<any, any>[]) {
     this.disconnect();
     this.ops = ops;
     this.connect();
   }
 
-  enable(){
+  enable() {
     this.enabled = true;
   }
 
-  disable(){
+  disable() {
     this.enabled = false;
   }
 }
 
-export interface IObservableDS  {
-  connect() : void;
-  isConnected() : boolean;
-  addObservable(key: any, os: DSObservableFn | Observable<any>, options?: IObserveOptions) : void;
-  next(key: any, value: any, options?: DSInputOptions) : void;
-  observe(key: any, value?: any, options?: DSOutputOptions) : Observable<any>;
-  disconnect() : void;
+export interface IObservableDS {
+  connect(): void;
+
+  isConnected(): boolean;
+
+  addObservable(key: any, os: DSObservableFn | Observable<any>, options?: IObserveOptions): void;
+
+  next(key: any, value: any, options?: DSInputOptions): void;
+
+  observe(key: any, value?: any, options?: DSOutputOptions): Observable<any>;
+
+  disconnect(): void;
+
   //setOperators(operators: DSOperator[], key?: any) : void;
   //clearOperators(...id) : void;
   //clearAllOperators() : void;
   addPipe(obs: Observable<any>, key: any, ...operators: OperatorFunction<any, any>[]): DSPipe;
-  asObservable() : Observable<any>;
+
+  asObservable(): Observable<any>;
+
   destroy();
+
   clearPipes(...pipes: DSPipe[]);
+
   clearAllPipes();
-  getPipes() : DSPipe[];
+
+  getPipes(): DSPipe[];
+
   //clone() : IObservableDS;
 }
 
@@ -409,10 +429,12 @@ export class ObservableDS implements IObservableDS {
     autoconnect?: boolean;
     key?: any;
     obs?: DSObservableFn | Observable<any>;
-  }){
-    if (options){
-      if (options.autoconnect) this.connect();
-      if (options.key && options.obs){
+  }) {
+    if (options) {
+      if (options.autoconnect) {
+        this.connect();
+      }
+      if (options.key && options.obs) {
         this.addObservable(options.key, options.obs);
       }
     } else {
@@ -426,44 +448,50 @@ export class ObservableDS implements IObservableDS {
   }
 
   connect(): void {
-    if (this.isConnected()) return;
+    if (this.isConnected()) {
+      return;
+    }
 
     this.inputSub = this.input$.pipe(
-      filter((input: DSInputEvent)=> {
-        if (this.fnMap.has(input.id)) return true;
+      filter((input: DSInputEvent) => {
+        if (this.fnMap.has(input.id)) {
+          return true;
+        }
         console.error(`[obs] observable with id '${input.id}' not found`);
         return false;
       }),
-      map((input: DSInputEvent)=> {
+      map((input: DSInputEvent) => {
         let obsFn = this.fnMap.get(input.id);
-        return { event: input, fn: obsFn(input.value), sub: this.subjectMap.get(input.id) }
+        return {event: input, fn: obsFn(input.value), sub: this.subjectMap.get(input.id)}
       }))
-      .subscribe((input)=> this.relay(input.event, input.fn, input.sub));
+      .subscribe((input) => this.relay(input.event, input.fn, input.sub));
     this.connected = true;
   }
 
-  protected relay(event: DSInputEvent, obs: Observable<any>, subject: Subject<any>){
+  protected relay(event: DSInputEvent, obs: Observable<any>, subject: Subject<any>) {
     //console.log(`-----> relay (${subject}: `, event);
     obs.pipe(
-      takeWhile(()=> this.connected),
+      takeWhile(() => this.connected),
       //tap((response) => { console.log(`-----> tap relay: `, response); subject.next(response) }),
       tap((response) => this.emit({input: event, output: response}))
     ).subscribe();
   }
 
-  protected emit(event: DSEvent){
+  protected emit(event: DSEvent) {
     this.events$.next(event);
   }
 
-  asObservable() : Observable<any> {
+  asObservable(): Observable<any> {
     return this.events$.asObservable();
   }
 
   disconnect(): void {
-    if (!this.isConnected()) return;
+    if (!this.isConnected()) {
+      return;
+    }
     this.inputSub.unsubscribe();
 
-    let bla = of([1,2,3]);
+    let bla = of([1, 2, 3]);
     let blaf = bla.subscribe();
     blaf.add(blaf);
 
@@ -472,7 +500,9 @@ export class ObservableDS implements IObservableDS {
   }
 
   next(key: any, value: any, options?: DSInputOptions): void {
-    if (!this.connected) return;
+    if (!this.connected) {
+      return;
+    }
     let event = {id: key, options: options, value: value};
     //console.log(`-----> next (${event})`, event);
     this.input$.next(event);
@@ -484,38 +514,40 @@ export class ObservableDS implements IObservableDS {
     return pipe;
   }
 
-  clearPipes(...pipes: DSPipe[]){
-    pipes.forEach((pipe, index)=>{
+  clearPipes(...pipes: DSPipe[]) {
+    pipes.forEach((pipe, index) => {
       pipe.disconnect();
       pipes = pipes.splice(index, 1);
     });
   }
 
-  clearAllPipes(){
+  clearAllPipes() {
     this.clearPipes(...this.pipes);
   }
 
-  getPipes() : DSPipe[] {
+  getPipes(): DSPipe[] {
     return this.pipes;
   }
 
   addObservable(key: any, obs: DSObservableFn | Observable<any>, options?: IObserveOptions): void {
-    if (!options) options = { behave: true };
-    this.fnMap.set(key, obs instanceof Observable ? ()=> obs : obs);
+    if (!options) {
+      options = {behave: true};
+    }
+    this.fnMap.set(key, obs instanceof Observable ? () => obs : obs);
     this.subjectMap.set(key, options.behave ? new BehaviorSubject<any>([]) : new Subject<any>());
   }
 
-  observe(key: any, value?:any, options?: DSOutputOptions): Observable<any> {
+  observe(key: any, value?: any, options?: DSOutputOptions): Observable<any> {
     let subject = this.subjectMap.get(key);
     try {
       return subject.asObservable();
     } finally {
-      if (value){
+      if (value) {
         this.next(key, value);
       }
     }
   }
 
-  destroy(){
+  destroy() {
   }
 }

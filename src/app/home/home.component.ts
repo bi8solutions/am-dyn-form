@@ -1,29 +1,27 @@
+import {of as observableOf, EMPTY, Observable, Subject} from 'rxjs';
+
+import {map, delay} from 'rxjs/operators';
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 
-import {Validators} from "@angular/forms";
+import {Validators} from '@angular/forms';
 
-import {DynFormGroup} from "../modules/am-dyn-form/dyn-form-group";
-import {DynTextControl} from "../modules/am-dyn-form/dyn-text-control";
-import {DynTextareaControl} from "../modules/am-dyn-form/dyn-textarea-control";
-import {DynSelectControl} from "../modules/am-dyn-form/dyn-select-control";
-import {ArrayAutoCompleteLoader, DynAutoCompleteControl} from "../modules/am-dyn-form/dyn-auto-complete-control";
-import {DynDateControl} from "../modules/am-dyn-form/dyn-date-control";
+import {DynFormGroup} from '../modules/am-dyn-form/dyn-form-group';
+import {DynTextControl} from '../modules/am-dyn-form/dyn-text-control';
+import {DynTextareaControl} from '../modules/am-dyn-form/dyn-textarea-control';
+import {DynSelectControl} from '../modules/am-dyn-form/dyn-select-control';
+import {ArrayAutoCompleteLoader, DynAutoCompleteControl} from '../modules/am-dyn-form/dyn-auto-complete-control';
+import {DynDateControl} from '../modules/am-dyn-form/dyn-date-control';
 
-import {EMPTY, Observable,} from "rxjs";
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
 
-import {TimeValidator} from "../modules/am-dyn-form/dyn-validators";
-import {DynAutoSelectControl} from "../modules/am-dyn-form/dyn-auto-select-control";
-import {delay, map} from "rxjs/operators";
-import {AppService, avengers} from "./home.service";
-import {of} from "rxjs/internal/observable/of";
-import {Subject} from "rxjs";
-import {interval} from "rxjs/internal/observable/interval";
+import {TimeValidator} from '../modules/am-dyn-form/dyn-validators';
+import {DynAutoSelectControl} from '../modules/am-dyn-form/dyn-auto-select-control';
+import {AppService, avengers} from './home.service';
+import {of} from 'rxjs/internal/observable/of';
+import {interval} from 'rxjs/internal/observable/interval';
 
 import * as _ from 'lodash';
-import {DynCheckboxControl} from "../modules/am-dyn-form/dyn-checkbox-field";
-import {Channel} from "@bi8/am-io";
+import {DynCheckboxControl} from '../modules/am-dyn-form/dyn-checkbox-field';
+import {Channel} from '@bi8/am-io';
 
 @Component({
   selector: 'app-home',
@@ -35,8 +33,8 @@ import {Channel} from "@bi8/am-io";
 })
 export class HomeComponent implements OnInit {
   demoForm: DynFormGroup;
-  @ViewChild('avengersLabel') avengerLabelTemplate : TemplateRef<any>;
-  @ViewChild('avengersOption') avengerOptionTemplate : TemplateRef<any>;
+  @ViewChild('avengersLabel', {static: false}) avengerLabelTemplate: TemplateRef<any>;
+  @ViewChild('avengersOption', {static: false}) avengerOptionTemplate: TemplateRef<any>;
 
   percentage: number = 0;
   percentageSubject = new Subject<any>();
@@ -45,29 +43,29 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    interval(500).subscribe(()=>{
+    interval(500).subscribe(() => {
       this.percentageSubject.next(this.percentage);
       this.percentage += 1
     });
 
-    let countries : any[] = [
-      { id: 1, code: 'ZA', name: 'South Africa' },
-      { id: 2, code: 'USA', name: 'United States of America'},
-      { id: 3, code: 'UK', name: 'United Kingdom'}
+    let countries: any[] = [
+      {id: 1, code: 'ZA', name: 'South Africa'},
+      {id: 2, code: 'USA', name: 'United States of America'},
+      {id: 3, code: 'UK', name: 'United Kingdom'}
     ];
 
     let heroes = [];
-    for (let i = 0; i < 200; i++){
-      heroes.push({ id: i+1, name: "Super Hero " + i })
+    for (let i = 0; i < 200; i++) {
+      heroes.push({id: i + 1, name: 'Super Hero ' + i})
     }
 
-    let countryOptions$ = Observable.of(countries).map((countries)=>{
-      countries.forEach((country, index)=>{
+    let countryOptions$ = observableOf(countries).pipe(map((countries) => {
+      countries.forEach((country, index) => {
         country.code = country.id;
         country.value = country.name;
       });
       return countries;
-    });
+    }));
 
     //let avengers$ = this.appService.findUserPosts(1);
     let avengers$ = of(avengers).pipe(delay(3000));
@@ -81,13 +79,13 @@ export class HomeComponent implements OnInit {
 
     let avengersChannel = new Channel({
       key: 'avengers',
-      debug: { verbose: true },
+      debug: {verbose: true},
       create: {
-        new: (term: any)=>{
-          if (term){
-            return of(_.filter(avengers, function(o) {
-                return o.slug.toLowerCase().indexOf(term.toLowerCase()) > -1;
-             }));
+        new: (term: any) => {
+          if (term) {
+            return of(_.filter(avengers$, function (o) {
+              return o.slug.toLowerCase().indexOf(term.toLowerCase()) > -1;
+            }));
           } else {
             return of(avengers).pipe(delay(500));
           }
@@ -97,14 +95,14 @@ export class HomeComponent implements OnInit {
 
     let usersChannel = new Channel({
       key: 'users',
-      debug: { verbose: true },
+      debug: {verbose: true},
       create: {
-        new: (term: any)=>{
-          if (term){
-            return of(_.filter(users, function(o) {
-                return o.name.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
-                       o.surname.toLowerCase().indexOf(term.toLowerCase()) > -1;
-             }));
+        new: (term: any) => {
+          if (term) {
+            return of(_.filter(users, function (o) {
+              return o.name.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                o.surname.toLowerCase().indexOf(term.toLowerCase()) > -1;
+            }));
           } else {
             return of(users);
           }
@@ -114,9 +112,11 @@ export class HomeComponent implements OnInit {
 
     let postsChannel = new Channel({
       key: 'posts',
-      debug: { verbose: true },
+      debug: {verbose: true},
       create: {
-        new: (params: any)=>{ return params ? this.appService.searchUserPosts(params.userId) : EMPTY; }
+        new: (params: any) => {
+          return params ? this.appService.searchUserPosts(params.userId) : EMPTY;
+        }
       }
     });
 
@@ -194,7 +194,7 @@ export class HomeComponent implements OnInit {
           placeholder: 'First Name',
           maxlimit: 64,
           messages: [
-            { key: 'required', value: 'First Name is required' }
+            {key: 'required', value: 'First Name is required'}
           ]
         }, [Validators.required]),
 
@@ -210,7 +210,7 @@ export class HomeComponent implements OnInit {
           placeholder: 'Last Name',
           maxlimit: 64,
           messages: [
-            { key: 'required', value: 'Last Name is required' }
+            {key: 'required', value: 'Last Name is required'}
           ]
         }, [Validators.required]),
 
@@ -221,7 +221,7 @@ export class HomeComponent implements OnInit {
           minRows: 5,
           maxRows: 10,
           messages: [
-            { key: 'required', value: 'Please provide Comments' }
+            {key: 'required', value: 'Please provide Comments'}
           ]
         }, [Validators.required]),
 
@@ -236,7 +236,7 @@ export class HomeComponent implements OnInit {
         heroes: new DynAutoCompleteControl({
           key: 'heroes',
           placeholder: 'Heroes',
-          loader: new ArrayAutoCompleteLoader(heroes, (hero, value)=>{
+          loader: new ArrayAutoCompleteLoader(heroes, (hero, value) => {
             return value ? hero.name.toLocaleLowerCase().indexOf(value.toLowerCase()) > -1 : true;
           }, {size: 50, codeProperty: 'id', valueProperty: 'name'})
         }, [Validators.required]),
@@ -246,7 +246,7 @@ export class HomeComponent implements OnInit {
           placeholder: 'From Date',
           minDate: new Date(),
           messages: [
-            { key: 'required', value: 'From Date is required' }
+            {key: 'required', value: 'From Date is required'}
           ]
         }, [Validators.required]),
         toDate: new DynDateControl({
@@ -255,22 +255,22 @@ export class HomeComponent implements OnInit {
           placeholder: 'To Date',
           minDate: new Date(),
           messages: [
-            { key: 'required', value: 'To Date is required' }
+            {key: 'required', value: 'To Date is required'}
           ]
         }, [Validators.required]),
         time: new DynTextControl({
           key: 'time',
-          placeholder: "Start Time",
+          placeholder: 'Start Time',
           messages: [
-            { key: 'time', value: 'Please provide a valid time' },
-            { key: 'required', value: 'Last Name is required' }
+            {key: 'time', value: 'Please provide a valid time'},
+            {key: 'required', value: 'Last Name is required'}
           ]
-        },[Validators.required, TimeValidator()])
+        }, [Validators.required, TimeValidator()])
       });
 
     //this.demoForm.get('country').setValue(1);
     this.demoForm.get('heroes').setValue(
-    { id: 3, name: "Super Hero 3" }
+      {id: 3, name: 'Super Hero 3'}
     );
 
     this.demoForm.patchValue({avengers: null});
@@ -278,29 +278,31 @@ export class HomeComponent implements OnInit {
     /////////this.demoForm.get('posts').setValue(3, {loadFn: (param)=>this.appService.loadPost(param)});
 
     this.demoForm.addSlaveObserver('users', 'posts', {
-      ops: [map((user: any)=>{return { userId: user.id }})]
+      ops: [map((user: any) => {
+        return {userId: user.id}
+      })]
     }).subscribe(postsChannel);
 
-    this.demoForm.get("heroes").updateValueAndValidity();
+    this.demoForm.get('heroes').updateValueAndValidity();
   }
 
-  doStuff(){
-    console.log("===========================> ", this.demoForm.value);
-    console.log("======> ", this.demoForm.get('fromDate').value);
+  doStuff() {
+    console.log('===========================> ', this.demoForm.value);
+    console.log('======> ', this.demoForm.get('fromDate').value);
     let date = new Date();
-    console.log("======> ", date);
-    console.log("======>date.toLocaleTimeString() ", date.toLocaleTimeString());
-    console.log("======>date.toJSON() ", date.toJSON());
-    console.log("======>date.toDateString() ", date.toDateString());
+    console.log('======> ', date);
+    console.log('======>date.toLocaleTimeString() ', date.toLocaleTimeString());
+    console.log('======>date.toJSON() ', date.toJSON());
+    console.log('======>date.toDateString() ', date.toDateString());
 
     let jsonValue = date.toJSON();
     let parsedDate = JSON.parse(jsonValue);
-    console.log("--> ", parsedDate);
+    console.log('--> ', parsedDate);
   }
 
-  getIdentity(){
+  getIdentity() {
   }
 
-  logout(){
+  logout() {
   }
 }

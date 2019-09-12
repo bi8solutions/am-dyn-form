@@ -1,12 +1,13 @@
+
+import {of as observableOf, Subject, Observable} from 'rxjs';
+
+import {map} from 'rxjs/operators';
 import {FormControl, ValidatorFn, AsyncValidatorFn} from "@angular/forms";
 import {DynFormControl} from "./dyn-form-control";
-import {Subject} from "rxjs/Subject";
 
 import * as _ from 'lodash';
 
-import {Observable} from "rxjs/Observable";
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+
 
 export class DynAutoCompleteControl extends DynFormControl {
   type = 'auto-complete';
@@ -93,7 +94,7 @@ export class ArrayAutoCompleteLoader implements AutoCompleteCriteriaLoader {
   }
 
   prepare(value: any) : Observable<Object> {
-    return Observable.of(this.items).map((items: any)=>{
+    return observableOf(this.items).pipe(map((items: any)=>{
       let filteredList = [];
 
       // note that when the actual selection takes place, the value will be the actual selected object
@@ -111,7 +112,7 @@ export class ArrayAutoCompleteLoader implements AutoCompleteCriteriaLoader {
         total: filteredList.length,
         items: filteredList.length > 0 ? _.chunk(filteredList, this.size)[this.page] : filteredList
       });
-    });
+    }));
   }
 
   processResponse(response){
@@ -139,9 +140,9 @@ export class ObservableAutoCompleteLoader implements AutoCompleteCriteriaLoader 
       value: value
     };
 
-    return this.loadFn(ctx).map((response : any)=>{
+    return this.loadFn(ctx).pipe(map((response : any)=>{
       return this.processResponse(response);
-    });
+    }));
   }
 
   processResponse(response){
@@ -188,9 +189,9 @@ export class KeywordAutoCompleteCriteriaLoader implements AutoCompleteCriteriaLo
 
   prepare(value: any) : Observable<Object> {
     let ctx = this.resolveContext(value);
-    return this.loadFn(ctx).map((response : any)=>{
+    return this.loadFn(ctx).pipe(map((response : any)=>{
       return this.processResponse(response);
-    });
+    }));
   }
 
   processResponse(response){

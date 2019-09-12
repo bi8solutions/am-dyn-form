@@ -1,14 +1,13 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
-import {AmDynFormModule} from "./modules/am-dyn-form/am-dyn-form.module";
-import {AmStorageModule} from "@bi8/am-storage";
-import {AppRoutingModule} from "./app-routing.module";
-import {HttpClientModule} from "@angular/common/http";
-import {RouterModule} from "@angular/router";
-import {HomeModule} from "./home/home.module";
-import {MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatInputModule} from "@angular/material";
+import {AppComponent} from './app.component';
+import {AmDynFormModule} from './modules/am-dyn-form/am-dyn-form.module';
+import {AppRoutingModule} from './app-routing.module';
+import {HttpClientModule} from '@angular/common/http';
+import {RouterModule} from '@angular/router';
+import {HomeModule} from './home/home.module';
+import {MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatInputModule} from '@angular/material';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -28,7 +27,6 @@ export const CUSTOM_FORMATS = {
   ],
   imports: [
     BrowserModule,
-    AmStorageModule,
     AmDynFormModule,
     AppRoutingModule,
     HttpClientModule,
@@ -36,10 +34,11 @@ export const CUSTOM_FORMATS = {
     HomeModule,
     MatInputModule
   ],
-  providers:    [
+  providers: [
     //{ provide: MAT_DATE_LOCALE, useValue: 'en-ZA'},
     //{provide: MAT_DATE_FORMATS, useValue: CUSTOM_FORMATS}
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

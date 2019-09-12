@@ -1,6 +1,6 @@
 import {ValidatorFn, AsyncValidatorFn} from "@angular/forms";
 import {DynFormControl} from "./dyn-form-control";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 
 export class DynSelectControl extends DynFormControl {
   type = 'select';

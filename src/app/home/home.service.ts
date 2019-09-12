@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {ObservableDS} from "../modules/am-dyn-form/dyn-datasource";
 import {tap} from "rxjs/operators";
 import {of} from "rxjs/internal/observable/of";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 
 export enum AppKeys {
   findUserPosts,

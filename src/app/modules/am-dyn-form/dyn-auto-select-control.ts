@@ -1,7 +1,6 @@
 import {ValidatorFn, AsyncValidatorFn} from "@angular/forms";
 import {DynFormControl} from "./dyn-form-control";
-import {Observable} from "rxjs";
-import {Subject} from "rxjs/Subject";
+import {Observable, Subject} from "rxjs";
 import {TemplateRef} from "@angular/core";
 import {debounceTime, distinctUntilChanged, tap} from "rxjs/operators";
 import {NgSelectComponent} from "@ng-select/ng-select";

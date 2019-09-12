@@ -1,7 +1,7 @@
 import {FormGroup, AbstractControl} from "@angular/forms";
-import {OperatorFunction} from "rxjs/interfaces";
+import {OperatorFunction, Observable} from "rxjs";
 import {filter, tap} from "rxjs/operators";
-import {Observable} from "rxjs";
+import {pipeFromArray} from 'rxjs/internal/util/pipe';
 
 export interface FilterFn {
   (value: any) : boolean
@@ -82,7 +82,7 @@ export class DynFormGroup extends FormGroup {
       ops.push(...options.ops);
     }
 
-    return masterField.valueChanges.pipe(...ops);
+    return masterField.valueChanges.pipe(pipeFromArray([...ops]));
   }
 }
 

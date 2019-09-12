@@ -7,6 +7,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AmDynFormModule } from "../modules/am-dyn-form/am-dyn-form.module";
 import {NgSelectModule} from "@ng-select/ng-select";
+import {NgOptionHighlightModule} from '@ng-select/ng-option-highlight';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import {NgSelectModule} from "@ng-select/ng-select";
     HomeRoutingModule,
     FlexLayoutModule,
     AmDynFormModule,
-    NgSelectModule
+    NgSelectModule,
+    NgOptionHighlightModule
   ],
   declarations: [HomeComponent],
   exports: [HomeComponent]
