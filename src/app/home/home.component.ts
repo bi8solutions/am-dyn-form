@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('avengersLabel', {static: false}) avengerLabelTemplate: TemplateRef<any>;
   @ViewChild('avengersOption', {static: false}) avengerOptionTemplate: TemplateRef<any>;
 
-  percentage: number = 0;
+  percentage = 0;
   percentageSubject = new Subject<any>();
 
   constructor(private appService: AppService) {
@@ -45,21 +45,21 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     interval(500).subscribe(() => {
       this.percentageSubject.next(this.percentage);
-      this.percentage += 1
+      this.percentage += 1;
     });
 
-    let countries: any[] = [
+    const countries: any[] = [
       {id: 1, code: 'ZA', name: 'South Africa'},
       {id: 2, code: 'USA', name: 'United States of America'},
       {id: 3, code: 'UK', name: 'United Kingdom'}
     ];
 
-    let heroes = [];
+    const heroes = [];
     for (let i = 0; i < 200; i++) {
-      heroes.push({id: i + 1, name: 'Super Hero ' + i})
+      heroes.push({id: i + 1, name: 'Super Hero ' + i});
     }
 
-    let countryOptions$ = observableOf(countries).pipe(map((countries) => {
+    const countryOptions$ = observableOf(countries).pipe(map((countries) => {
       countries.forEach((country, index) => {
         country.code = country.id;
         country.value = country.name;
@@ -67,21 +67,22 @@ export class HomeComponent implements OnInit {
       return countries;
     }));
 
-    //let avengers$ = this.appService.findUserPosts(1);
-    let avengers$ = of(avengers).pipe(delay(3000));
+    // let avengers$ = this.appService.findUserPosts(1);
+    const avengers$ = of(avengers).pipe(delay(3000))
 
-    let users = [
+    const users = [
       {id: 1, name: 'Piet', surname: 'Pompies'},
       {id: 2, name: 'Sannie', surname: 'van Wyk'},
       {id: 3, name: 'Jan', surname: 'Geldenhuys'},
       {id: 4, name: 'Duff', surname: 'Beer'}
     ];
 
-    let avengersChannel = new Channel({
+    const avengersChannel = new Channel({
       key: 'avengers',
       debug: {verbose: true},
       create: {
         new: (term: any) => {
+          console.log(term);
           if (term) {
             return of(_.filter(avengers$, function (o) {
               return o.slug.toLowerCase().indexOf(term.toLowerCase()) > -1;
@@ -93,7 +94,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    let usersChannel = new Channel({
+    const usersChannel = new Channel({
       key: 'users',
       debug: {verbose: true},
       create: {
@@ -110,7 +111,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    let postsChannel = new Channel({
+    const postsChannel = new Channel({
       key: 'posts',
       debug: {verbose: true},
       create: {
@@ -125,9 +126,9 @@ export class HomeComponent implements OnInit {
         avengers: new DynAutoSelectControl({
           key: 'avengers',
           placeholder: 'Select your Avenger',
-          //bindValue: 'id',
-          //labelTemplate: this.avengerLabelTemplate,
-          //optionTemplate: this.avengerOptionTemplate,
+          // bindValue: 'id',
+          // labelTemplate: this.avengerLabelTemplate,
+          // optionTemplate: this.avengerOptionTemplate,
           channel: avengersChannel,
           useDefaultErrorMessages: true,
           searchable: true,
@@ -144,8 +145,8 @@ export class HomeComponent implements OnInit {
         }, [Validators.required]),
         posts: new DynAutoSelectControl({
           key: 'posts',
-          //defaultValue: 9,
-          //loadFn: (param)=> param ? this.appService.loadPost(param) : EMPTY,
+          // defaultValue: 9,
+          // loadFn: (param)=> param ? this.appService.loadPost(param) : EMPTY,
           placeholder: 'Select a post',
           bindLabel: 'title',
           channel: postsChannel,
@@ -268,18 +269,22 @@ export class HomeComponent implements OnInit {
         }, [Validators.required, TimeValidator()])
       });
 
-    //this.demoForm.get('country').setValue(1);
+    avengersChannel.enable().next();
+    usersChannel.enable().next();
+    postsChannel.enable().next();
+
+    // this.demoForm.get('country').setValue(1);
     this.demoForm.get('heroes').setValue(
       {id: 3, name: 'Super Hero 3'}
     );
 
     this.demoForm.patchValue({avengers: null});
 
-    /////////this.demoForm.get('posts').setValue(3, {loadFn: (param)=>this.appService.loadPost(param)});
+    ///////// this.demoForm.get('posts').setValue(3, {loadFn: (param)=>this.appService.loadPost(param)});
 
     this.demoForm.addSlaveObserver('users', 'posts', {
       ops: [map((user: any) => {
-        return {userId: user.id}
+        return {userId: user.id};
       })]
     }).subscribe(postsChannel);
 
@@ -289,14 +294,14 @@ export class HomeComponent implements OnInit {
   doStuff() {
     console.log('===========================> ', this.demoForm.value);
     console.log('======> ', this.demoForm.get('fromDate').value);
-    let date = new Date();
+    const date = new Date();
     console.log('======> ', date);
     console.log('======>date.toLocaleTimeString() ', date.toLocaleTimeString());
     console.log('======>date.toJSON() ', date.toJSON());
     console.log('======>date.toDateString() ', date.toDateString());
 
-    let jsonValue = date.toJSON();
-    let parsedDate = JSON.parse(jsonValue);
+    const jsonValue = date.toJSON();
+    const parsedDate = JSON.parse(jsonValue);
     console.log('--> ', parsedDate);
   }
 
