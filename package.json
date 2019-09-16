@@ -1,6 +1,6 @@
 {
   "name": "@bi8/am-dyn-form",
-  "version": "6.1.14",
+  "version": "8.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -30,8 +30,8 @@
     "@angular/platform-browser": "8.2.4",
     "@angular/platform-browser-dynamic": "8.2.4",
     "@angular/router": "8.2.4",
-    "@bi8/am-io": "^6.1.0",
-    "@bi8/am-storage": "^6.1.0",
+    "@bi8/am-io": "8.0.0",
+    "@bi8/am-storage": "8.0.0",
     "@ng-select/ng-option-highlight": "0.0.2",
     "@ng-select/ng-select": "3.0.7",
     "core-js": "3.2.1",
@@ -65,7 +65,7 @@
     "ts-node": "7.0.0",
     "tslint": "5.15.0",
     "typescript": "3.5.3",
-    "ng-packagr": "3.0.6",
+    "ng-packagr": "5.5.1",
     "tsickle": "0.37.0",
     "tslib": "1.10.0"
   },
