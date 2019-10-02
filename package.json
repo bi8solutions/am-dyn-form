@@ -1,6 +1,6 @@
 {
   "name": "@bi8/am-dyn-form",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -33,7 +33,7 @@
     "@bi8/am-io": "8.0.0",
     "@bi8/am-storage": "8.0.0",
     "@ng-select/ng-option-highlight": "0.0.2",
-    "@ng-select/ng-select": "3.0.7",
+    "@ng-select/ng-select": "2.20.5",
     "core-js": "3.2.1",
     "lodash": "4.17.15",
     "material-design-icons": "3.0.1",

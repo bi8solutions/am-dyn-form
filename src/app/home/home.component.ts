@@ -33,8 +33,8 @@ import {Channel} from '@bi8/am-io';
 })
 export class HomeComponent implements OnInit {
   demoForm: DynFormGroup;
-  @ViewChild('avengersLabel', {static: false}) avengerLabelTemplate: TemplateRef<any>;
-  @ViewChild('avengersOption', {static: false}) avengerOptionTemplate: TemplateRef<any>;
+  @ViewChild('avengersLabel', {static: true}) avengerLabelTemplate: TemplateRef<any>;
+  @ViewChild('avengersOption', {static: true}) avengerOptionTemplate: TemplateRef<any>;
 
   percentage = 0;
   percentageSubject = new Subject<any>();
@@ -127,8 +127,8 @@ export class HomeComponent implements OnInit {
           key: 'avengers',
           placeholder: 'Select your Avenger',
           // bindValue: 'id',
-          // labelTemplate: this.avengerLabelTemplate,
-          // optionTemplate: this.avengerOptionTemplate,
+          labelTemplate: this.avengerLabelTemplate,
+          optionTemplate: this.avengerOptionTemplate,
           channel: avengersChannel,
           useDefaultErrorMessages: true,
           searchable: true,
